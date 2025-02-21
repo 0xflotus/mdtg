@@ -1,0 +1,17 @@
+{
+  "name": "mdtg",
+  "version": "0.0.1",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "node index.test.js"
+  },
+  "keywords": [
+    "military",
+    "date",
+    "time"
+  ],
+  "author": "0xflotus",
+  "license": "MIT",
+  "description": "This package offers you methods to convert Date Objects to military date time and vice versa"
+}
