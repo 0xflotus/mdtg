@@ -1,6 +1,6 @@
 # MDTG
 
-This is a package that helps you to convert `Date` objects to military date time and vice versa.
+This is a package that helps you to convert `Date` objects to [military date time](https://en.wikipedia.org/wiki/Date-time_group) and vice versa.
 
 #### Limitations
 
