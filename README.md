@@ -2,6 +2,10 @@
 
 This is a package that helps you to convert `Date` objects to military date time and vice versa.
 
+#### Limitations
+
+Currently there is no support for different timezones.
+
 ### Install
 
 ```bash
