@@ -1,5 +1,3 @@
-
-
 export class MDTG {
     #currentDate = null;
     static months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
@@ -13,11 +11,11 @@ export class MDTG {
     }
 
     static isShortenedFormat(str) {
-        return /^[0-9]{6}Z(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[0-9]{2}$/.test(str);
+        return /^[0-9]{6}Z(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[0-9]{2}$/i.test(str);
     }
 
     static isLongFormat(str) {
-        return /^[0-9]{8}Z(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[0-9]{2}$/.test(str);
+        return /^[0-9]{8}Z(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[0-9]{2}$/i.test(str);
     }
 
     #toShortMDT() {
@@ -76,7 +74,8 @@ export class MDTG {
             const day = Number.parseInt(str.slice(0, 2));
             const hours = Number.parseInt(str.slice(2, 4));
             const minutes = Number.parseInt(str.slice(4, 6));
-            const month = MDTG.months.indexOf(str.slice(7, 10));
+            const _timezone = str.slice(6, 7);
+            const month = MDTG.months.indexOf(str.slice(7, 10).toLowerCase());
             const year = 2000 + Number.parseInt(str.slice(10, 12));
             const date = new Date(year, month, day, hours, minutes, 0, 0);
             return date;
@@ -85,7 +84,8 @@ export class MDTG {
             const hours = Number.parseInt(str.slice(2, 4));
             const minutes = Number.parseInt(str.slice(4, 6));
             const seconds = Number.parseInt(str.slice(6, 8));
-            const month = MDTG.months.indexOf(str.slice(9, 12));
+            const _timezone = str.slice(8, 9);
+            const month = MDTG.months.indexOf(str.slice(9, 12).toLowerCase());
             const year = 2000 + Number.parseInt(str.slice(12, 14));
             const date = new Date(year, month, day, hours, minutes, seconds, 0);
             return date;

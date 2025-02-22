@@ -11,6 +11,7 @@ strict("12135530Zaug24" === mdtg.toMDT());
 
 strict(MDTG.parse("12135530Zaug24").toString() === (new Date(2024, 7, 12, 13, 55, 30, 0)).toString());
 strict(MDTG.parse("121355Zaug24").toString() === (new Date(2024, 7, 12, 13, 55, 0, 0)).toString());
+strict(MDTG.parse("121355ZAUG24").toString() === (new Date(2024, 7, 12, 13, 55, 0, 0)).toString());
 strict(MDTG.parse("121355Z").toString() === (new Date((new Date()).getFullYear(), (new Date()).getMonth(), 12, 13, 55, 0, 0)).toString());
 
 
