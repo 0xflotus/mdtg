@@ -4,6 +4,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "format": "prettier --check .",
+    "lint": "eslint .",
     "test": "node index.test.js"
   },
   "keywords": [
@@ -13,5 +15,9 @@
   ],
   "author": "0xflotus",
   "license": "MIT",
-  "description": "This package offers you methods to convert Date Objects to military date time and vice versa"
+  "description": "This package offers you methods to convert Date Objects to military date time and vice versa",
+  "devDependencies": {
+    "eslint": "9.21.0",
+    "prettier": "3.5.2"
+  }
 }
