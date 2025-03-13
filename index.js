@@ -1,3 +1,5 @@
+const normalizeNumber = (number) => String(number).padStart(2, "0");
+
 export class MDTG {
   #currentDate = null;
   static months = [
@@ -36,11 +38,14 @@ export class MDTG {
   }
 
   #toShortMDT() {
-    const shortMDT =
-      String(this.#currentDate.getDate()).padStart(2, "0") +
-      String(this.#currentDate.getHours()).padStart(2, "0") +
-      String(this.#currentDate.getMinutes()).padStart(2, "0") +
-      "Z";
+    const shortMDT = [
+      this.#currentDate.getDate(),
+      this.#currentDate.getHours(),
+      this.#currentDate.getMinutes(),
+    ]
+      .map(normalizeNumber)
+      .concat("Z")
+      .join("");
     if (!MDTG.isShortFormat(shortMDT)) {
       throw new Error("There was an error while building short MDT");
     }
@@ -48,14 +53,19 @@ export class MDTG {
   }
 
   #toLongMDT() {
-    const longMDT =
-      String(this.#currentDate.getDate()).padStart(2, "0") +
-      String(this.#currentDate.getHours()).padStart(2, "0") +
-      String(this.#currentDate.getMinutes()).padStart(2, "0") +
-      String(this.#currentDate.getSeconds()).padStart(2, "0") +
-      "Z" +
-      MDTG.months[this.#currentDate.getMonth()] +
-      String(this.#currentDate.getFullYear() % 2000).padStart(2, "0");
+    const longMDT = [
+      this.#currentDate.getDate(),
+      this.#currentDate.getHours(),
+      this.#currentDate.getMinutes(),
+      this.#currentDate.getSeconds(),
+    ]
+      .map(normalizeNumber)
+      .concat(
+        "Z",
+        MDTG.months[this.#currentDate.getMonth()],
+        normalizeNumber(this.#currentDate.getFullYear() % 2000),
+      )
+      .join("");
     if (!MDTG.isLongFormat(longMDT)) {
       throw new Error("There was an error while building long MDT");
     }
@@ -63,10 +73,11 @@ export class MDTG {
   }
 
   #toShortenedMDT() {
-    const shortenedMDT =
-      this.#toShortMDT() +
-      MDTG.months[this.#currentDate.getMonth()] +
-      String(this.#currentDate.getFullYear() % 2000).padStart(2, "0");
+    const shortenedMDT = [
+      this.#toShortMDT(),
+      MDTG.months[this.#currentDate.getMonth()],
+      normalizeNumber(this.#currentDate.getFullYear() % 2000),
+    ].join("");
     if (!MDTG.isShortenedFormat(shortenedMDT)) {
       throw new Error("There was an error while building shortened MDT");
     }
