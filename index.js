@@ -17,31 +17,60 @@ export class MDTG {
     "dec",
   ];
 
+  static offset = {
+    Y: -12,
+    X: -11,
+    W: -10,
+    V: -9,
+    U: -8,
+    T: -7,
+    S: -6,
+    R: -5,
+    Q: -4,
+    P: -3,
+    O: -2,
+    N: -1,
+    Z: 0,
+    A: 1,
+    B: 2,
+    C: 3,
+    D: 4,
+    E: 5,
+    F: 6,
+    G: 7,
+    H: 8,
+    I: 9,
+    J: 10,
+    K: 11,
+    L: 12,
+    M: 13,
+  };
+
   constructor(date) {
     this.#currentDate = date ?? new Date();
   }
 
   static isShortFormat(str) {
-    return /^[0-9]{6}Z$/.test(str);
+    return /^[0-9]{6}[A-Z]$/.test(str);
   }
 
   static isShortenedFormat(str) {
-    return /^[0-9]{6}Z(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[0-9]{2}$/i.test(
+    return /^[0-9]{6}[A-Z](jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[0-9]{2}$/i.test(
       str,
     );
   }
 
   static isLongFormat(str) {
-    return /^[0-9]{8}Z(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[0-9]{2}$/i.test(
+    return /^[0-9]{8}[A-Z](jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[0-9]{2}$/i.test(
       str,
     );
   }
 
   #toShortMDT() {
     const shortMDT = [
-      this.#currentDate.getDate(),
-      this.#currentDate.getHours(),
-      this.#currentDate.getMinutes(),
+      this.#currentDate.getUTCDate(),
+      this.#currentDate.getUTCHours(),
+      this.#currentDate.getUTCMinutes(),
     ]
       .map(normalizeNumber)
       .concat("Z")
@@ -54,16 +83,16 @@ export class MDTG {
 
   #toLongMDT() {
     const longMDT = [
-      this.#currentDate.getDate(),
-      this.#currentDate.getHours(),
-      this.#currentDate.getMinutes(),
-      this.#currentDate.getSeconds(),
+      this.#currentDate.getUTCDate(),
+      this.#currentDate.getUTCHours(),
+      this.#currentDate.getUTCMinutes(),
+      this.#currentDate.getUTCSeconds(),
     ]
       .map(normalizeNumber)
       .concat(
         "Z",
-        MDTG.months[this.#currentDate.getMonth()],
-        normalizeNumber(this.#currentDate.getFullYear() % 2000),
+        MDTG.months[this.#currentDate.getUTCMonth()],
+        normalizeNumber(this.#currentDate.getUTCFullYear() % 2000),
       )
       .join("");
     if (!MDTG.isLongFormat(longMDT)) {
@@ -75,8 +104,8 @@ export class MDTG {
   #toShortenedMDT() {
     const shortenedMDT = [
       this.#toShortMDT(),
-      MDTG.months[this.#currentDate.getMonth()],
-      normalizeNumber(this.#currentDate.getFullYear() % 2000),
+      MDTG.months[this.#currentDate.getUTCMonth()],
+      normalizeNumber(this.#currentDate.getUTCFullYear() % 2000),
     ].join("");
     if (!MDTG.isShortenedFormat(shortenedMDT)) {
       throw new Error("There was an error while building shortened MDT");
@@ -103,13 +132,15 @@ export class MDTG {
 
       const today = new Date();
       const date = new Date(
-        today.getFullYear(),
-        today.getMonth(),
-        day,
-        hours,
-        minutes,
-        0,
-        0,
+        Date.UTC(
+          today.getUTCFullYear(),
+          today.getUTCMonth(),
+          day,
+          hours,
+          minutes,
+          0,
+          0,
+        ),
       );
       return date;
     } else if (MDTG.isShortenedFormat(str)) {
@@ -119,7 +150,7 @@ export class MDTG {
       const _timezone = str.slice(6, 7);
       const month = MDTG.months.indexOf(str.slice(7, 10).toLowerCase());
       const year = 2000 + Number.parseInt(str.slice(10, 12));
-      const date = new Date(year, month, day, hours, minutes, 0, 0);
+      const date = new Date(Date.UTC(year, month, day, hours, minutes, 0, 0));
       return date;
     } else if (MDTG.isLongFormat(str)) {
       const day = Number.parseInt(str.slice(0, 2));
@@ -129,7 +160,9 @@ export class MDTG {
       const _timezone = str.slice(8, 9);
       const month = MDTG.months.indexOf(str.slice(9, 12).toLowerCase());
       const year = 2000 + Number.parseInt(str.slice(12, 14));
-      const date = new Date(year, month, day, hours, minutes, seconds, 0);
+      const date = new Date(
+        Date.UTC(year, month, day, hours, minutes, seconds, 0),
+      );
       return date;
     } else {
       throw Error("There was an error while parsing the string " + str);
