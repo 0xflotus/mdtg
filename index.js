@@ -18,36 +18,49 @@ export class MDTG {
   ];
 
   static offset = {
-    Y: -12,
-    X: -11,
-    W: -10,
-    V: -9,
-    U: -8,
-    T: -7,
-    S: -6,
-    R: -5,
-    Q: -4,
-    P: -3,
-    O: -2,
-    N: -1,
+    Y: 12,
+    X: 11,
+    W: 10,
+    V: 9,
+    U: 8,
+    T: 7,
+    S: 6,
+    R: 5,
+    Q: 4,
+    P: 3,
+    O: 2,
+    N: 1,
     Z: 0,
-    A: 1,
-    B: 2,
-    C: 3,
-    D: 4,
-    E: 5,
-    F: 6,
-    G: 7,
-    H: 8,
-    I: 9,
-    J: 10,
-    K: 11,
-    L: 12,
-    M: 13,
+    A: -1,
+    B: -2,
+    C: -3,
+    D: -4,
+    E: -5,
+    F: -6,
+    G: -7,
+    H: -8,
+    I: -9,
+    J: -10,
+    K: -11,
+    L: -12,
+    M: -13,
   };
 
   constructor(date) {
-    this.#currentDate = date ?? new Date();
+    const now = new Date();
+    this.#currentDate =
+      date ??
+      new Date(
+        Date.UTC(
+          now.getUTCFullYear(),
+          now.getUTCMonth(),
+          now.getUTCDate(),
+          now.getUTCHours(),
+          now.getUTCMinutes(),
+          now.getUTCSeconds(),
+          now.getUTCMilliseconds(),
+        ),
+      );
   }
 
   static isShortFormat(str) {
@@ -128,7 +141,7 @@ export class MDTG {
       const day = Number.parseInt(str.slice(0, 2));
       const hours = Number.parseInt(str.slice(2, 4));
       const minutes = Number.parseInt(str.slice(4, 6));
-      const _timezone = str.slice(-1);
+      const timezoneOffset = str.slice(-1).toUpperCase();
 
       const today = new Date();
       const date = new Date(
@@ -136,7 +149,7 @@ export class MDTG {
           today.getUTCFullYear(),
           today.getUTCMonth(),
           day,
-          hours,
+          hours + this.offset[timezoneOffset],
           minutes,
           0,
           0,
@@ -147,21 +160,39 @@ export class MDTG {
       const day = Number.parseInt(str.slice(0, 2));
       const hours = Number.parseInt(str.slice(2, 4));
       const minutes = Number.parseInt(str.slice(4, 6));
-      const _timezone = str.slice(6, 7);
+      const timezoneOffset = str.slice(6, 7).toUpperCase();
       const month = MDTG.months.indexOf(str.slice(7, 10).toLowerCase());
       const year = 2000 + Number.parseInt(str.slice(10, 12));
-      const date = new Date(Date.UTC(year, month, day, hours, minutes, 0, 0));
+      const date = new Date(
+        Date.UTC(
+          year,
+          month,
+          day,
+          hours + this.offset[timezoneOffset],
+          minutes,
+          0,
+          0,
+        ),
+      );
       return date;
     } else if (MDTG.isLongFormat(str)) {
       const day = Number.parseInt(str.slice(0, 2));
       const hours = Number.parseInt(str.slice(2, 4));
       const minutes = Number.parseInt(str.slice(4, 6));
       const seconds = Number.parseInt(str.slice(6, 8));
-      const _timezone = str.slice(8, 9);
+      const timezoneOffset = str.slice(8, 9).toUpperCase();
       const month = MDTG.months.indexOf(str.slice(9, 12).toLowerCase());
       const year = 2000 + Number.parseInt(str.slice(12, 14));
       const date = new Date(
-        Date.UTC(year, month, day, hours, minutes, seconds, 0),
+        Date.UTC(
+          year,
+          month,
+          day,
+          hours + this.offset[timezoneOffset],
+          minutes,
+          seconds,
+          0,
+        ),
       );
       return date;
     } else {

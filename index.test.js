@@ -14,6 +14,30 @@ strict(
     new Date(Date.UTC(2024, 7, 12, 11, 55, 30, 0)).toString(),
 );
 strict(
+  MDTG.parse("12115530Aaug24").toString() ===
+    new Date(Date.UTC(2024, 7, 12, 10, 55, 30, 0)).toString(),
+);
+strict(
+  MDTG.parse("12115530Qaug24").toString() ===
+    new Date(Date.UTC(2024, 7, 12, 15, 55, 30, 0)).toString(),
+);
+strict(
+  MDTG.parse("12115530Yaug24").toString() ===
+    new Date(Date.UTC(2024, 7, 12, 23, 55, 30, 0)).toString(),
+);
+strict(
+  MDTG.parse("12115530Maug24").toString() ===
+    new Date(Date.UTC(2024, 7, 11, 22, 55, 30, 0)).toString(),
+);
+strict(
+  MDTG.parse("12115530maug24").toString() ===
+    new Date(Date.UTC(2024, 7, 11, 22, 55, 30, 0)).toString(),
+);
+strict(
+  MDTG.parse("12115530mAUG24").toString() ===
+    new Date(Date.UTC(2024, 7, 11, 22, 55, 30, 0)).toString(),
+);
+strict(
   MDTG.parse("121155Zaug24").toString() ===
     new Date(Date.UTC(2024, 7, 12, 11, 55, 0, 0)).toString(),
 );
@@ -29,6 +53,20 @@ strict(
         new Date().getUTCMonth(),
         12,
         11,
+        55,
+        0,
+        0,
+      ),
+    ).toString(),
+);
+strict(
+  MDTG.parse("121155A").toString() ===
+    new Date(
+      Date.UTC(
+        new Date().getUTCFullYear(),
+        new Date().getUTCMonth(),
+        12,
+        10,
         55,
         0,
         0,

@@ -2,10 +2,6 @@
 
 This is a package that helps you to convert `Date` objects to [military date time](https://en.wikipedia.org/wiki/Date-time_group) and vice versa.
 
-#### Limitations
-
-Currently there is no support for different timezones.
-
 ### Install
 
 ```bash
@@ -24,6 +20,7 @@ console.log(mdtg.toMDT({ form: "shortened" }));
 console.log(mdtg.toMDT({ form: "long" }));
 
 console.log(MDTG.parse("12135530Zaug24"));
-console.log(MDTG.parse("121355Zaug24"));
-console.log(MDTG.parse("121355Z"));
+console.log(MDTG.parse("12135530Asep24"));
+console.log(MDTG.parse("121355LOCT24"));
+console.log(MDTG.parse("121355M"));
 ```
