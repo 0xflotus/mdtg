@@ -51,6 +51,21 @@ strict(
   "311200Ydec01" === newYear2002.toMDT({ form: "shortened", timezone: "y" }),
 );
 
+const now = new Date();
+const secondThisMonth = new MDTG(
+  new Date(
+    Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      2,
+      11,
+      27,
+      now.getUTCSeconds(),
+    ),
+  ),
+);
+strict("021127Z" === secondThisMonth.toMDT({ form: "short" }));
+
 strict(
   MDTG.parse("12115530Zaug24").toString() ===
     new Date(Date.UTC(2024, 7, 12, 11, 55, 30, 0)).toString(),
