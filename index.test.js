@@ -117,6 +117,20 @@ strict(
     ).toString(),
 );
 strict(
+  MDTG.parse("121155Q").toString() ===
+    new Date(
+      Date.UTC(
+        new Date().getUTCFullYear(),
+        new Date().getUTCMonth(),
+        12,
+        15,
+        55,
+        0,
+        0,
+      ),
+    ).toString(),
+);
+strict(
   MDTG.parse("121155A").toString() ===
     new Date(
       Date.UTC(
