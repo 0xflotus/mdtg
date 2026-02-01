@@ -2,7 +2,8 @@ const normalizeNumber = (number) => String(number).padStart(2, "0");
 
 export class MDTG {
 	#currentDate = null;
-	static months = [
+
+	static #months = [
 		"jan",
 		"feb",
 		"mar",
@@ -17,7 +18,11 @@ export class MDTG {
 		"dec",
 	];
 
-	static offset = {
+  static #shortFormatRegex = /^[0-9]{6}[A-Z]$/;
+  static #shortenedFormatRegex = /^[0-9]{6}[A-Z](jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[0-9]{2}$/i;
+  static #longFormatRegex = /^[0-9]{8}[A-Z](jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[0-9]{2}$/i;
+
+	static #offset = {
 		Y: 12,
 		X: 11,
 		W: 10,
@@ -64,19 +69,15 @@ export class MDTG {
 	}
 
 	static isShortFormat(str) {
-		return /^[0-9]{6}[A-Z]$/.test(str);
+		return MDTG.#shortFormatRegex.test(str);
 	}
 
 	static isShortenedFormat(str) {
-		return /^[0-9]{6}[A-Z](jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[0-9]{2}$/i.test(
-			str,
-		);
+		return MDTG.#shortenedFormatRegex.test(str);
 	}
 
 	static isLongFormat(str) {
-		return /^[0-9]{8}[A-Z](jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[0-9]{2}$/i.test(
-			str,
-		);
+		return MDTG.#longFormatRegex.test(str); 
 	}
 
 	#toShortMDT(timezone = "Z") {
@@ -88,7 +89,7 @@ export class MDTG {
 				this.#currentDate.getUTCFullYear(),
 				this.#currentDate.getUTCMonth(),
 				this.#currentDate.getUTCDate(),
-				this.#currentDate.getUTCHours() - MDTG.offset[timezone.toUpperCase()],
+				this.#currentDate.getUTCHours() - MDTG.#offset[timezone.toUpperCase()],
 				this.#currentDate.getUTCMinutes(),
 			),
 		);
@@ -115,7 +116,7 @@ export class MDTG {
 				this.#currentDate.getUTCFullYear(),
 				this.#currentDate.getUTCMonth(),
 				this.#currentDate.getUTCDate(),
-				this.#currentDate.getUTCHours() - MDTG.offset[timezone.toUpperCase()],
+				this.#currentDate.getUTCHours() - MDTG.#offset[timezone.toUpperCase()],
 				this.#currentDate.getUTCMinutes(),
 				this.#currentDate.getUTCSeconds(),
 			),
@@ -129,7 +130,7 @@ export class MDTG {
 			.map(normalizeNumber)
 			.concat(
 				timezone.toUpperCase(),
-				MDTG.months[newDate.getUTCMonth()],
+				MDTG.#months[newDate.getUTCMonth()],
 				normalizeNumber(newDate.getUTCFullYear() % 2000),
 			)
 			.join("");
@@ -148,17 +149,17 @@ export class MDTG {
 				this.#currentDate.getUTCFullYear(),
 				this.#currentDate.getUTCMonth(),
 				this.#currentDate.getUTCDate(),
-				this.#currentDate.getUTCHours() - MDTG.offset[timezone.toUpperCase()],
+				this.#currentDate.getUTCHours() - MDTG.#offset[timezone.toUpperCase()],
 				this.#currentDate.getUTCMinutes(),
 				this.#currentDate.getUTCSeconds(),
 			),
 		);
 		const shortenedMDT = [
 			this.#toShortMDT(timezone.toUpperCase()),
-			MDTG.months[newDate.getUTCMonth()],
+			MDTG.#months[newDate.getUTCMonth()],
 			normalizeNumber(newDate.getUTCFullYear() % 2000),
 		].join("");
-		if (!MDTG.isShortenedFormat(shortenedMDT)) {
+    if (!MDTG.isShortenedFormat(shortenedMDT)) {
 			throw new Error("There was an error while building shortened MDT");
 		}
 		return shortenedMDT;
@@ -187,7 +188,7 @@ export class MDTG {
 					today.getUTCFullYear(),
 					today.getUTCMonth(),
 					day,
-					hours + MDTG.offset[timezoneOffset],
+					hours + MDTG.#offset[timezoneOffset],
 					minutes,
 					0,
 					0,
@@ -199,14 +200,14 @@ export class MDTG {
 			const hours = Number.parseInt(str.slice(2, 4), 10);
 			const minutes = Number.parseInt(str.slice(4, 6), 10);
 			const timezoneOffset = str.slice(6, 7).toUpperCase();
-			const month = MDTG.months.indexOf(str.slice(7, 10).toLowerCase());
+			const month = MDTG.#months.indexOf(str.slice(7, 10).toLowerCase());
 			const year = 2000 + Number.parseInt(str.slice(10, 12), 10);
 			const date = new Date(
 				Date.UTC(
 					year,
 					month,
 					day,
-					hours + MDTG.offset[timezoneOffset],
+					hours + MDTG.#offset[timezoneOffset],
 					minutes,
 					0,
 					0,
@@ -219,14 +220,14 @@ export class MDTG {
 			const minutes = Number.parseInt(str.slice(4, 6), 10);
 			const seconds = Number.parseInt(str.slice(6, 8), 10);
 			const timezoneOffset = str.slice(8, 9).toUpperCase();
-			const month = MDTG.months.indexOf(str.slice(9, 12).toLowerCase());
+			const month = MDTG.#months.indexOf(str.slice(9, 12).toLowerCase());
 			const year = 2000 + Number.parseInt(str.slice(12, 14), 10);
 			const date = new Date(
 				Date.UTC(
 					year,
 					month,
 					day,
-					hours + MDTG.offset[timezoneOffset],
+					hours + MDTG.#offset[timezoneOffset],
 					minutes,
 					seconds,
 					0,
