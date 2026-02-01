@@ -166,7 +166,7 @@ describe("MDTG Parsing Tests", () => {
 	});
 
 	it("should parse short form and get the right date", () => {
-		expect(MDTG.parse("121155Z").toString()).toBe(
+		expect(MDTG.parse("121155Z")).toStrictEqual(
 			new Date(
 				Date.UTC(
 					new Date().getUTCFullYear(),
@@ -177,10 +177,10 @@ describe("MDTG Parsing Tests", () => {
 					0,
 					0,
 				),
-			).toString(),
+			),
 		);
 
-		expect(MDTG.parse("121155Q").toString()).toBe(
+		expect(MDTG.parse("121155Q")).toStrictEqual(
 			new Date(
 				Date.UTC(
 					new Date().getUTCFullYear(),
@@ -191,10 +191,10 @@ describe("MDTG Parsing Tests", () => {
 					0,
 					0,
 				),
-			).toString(),
+			),
 		);
 
-		expect(MDTG.parse("121155A").toString()).toBe(
+		expect(MDTG.parse("121155A")).toStrictEqual(
 			new Date(
 				Date.UTC(
 					new Date().getUTCFullYear(),
@@ -205,7 +205,7 @@ describe("MDTG Parsing Tests", () => {
 					0,
 					0,
 				),
-			).toString(),
+			),
 		);
 	});
 });
