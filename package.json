@@ -10,7 +10,7 @@
 	"scripts": {
 		"format": "biome format .",
 		"prelint": "npm run format",
-		"lint": "eslint .",
+		"lint": "biome lint .",
 		"test": "vitest run"
 	},
 	"keywords": [
@@ -23,7 +23,6 @@
 	"description": "This package offers you methods to convert Date Objects to military date time and vice versa",
 	"devDependencies": {
 		"@biomejs/biome": "2.3.13",
-		"eslint": "9.39.2",
 		"vitest": "4.0.18"
 	}
 }
