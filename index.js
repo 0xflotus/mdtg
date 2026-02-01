@@ -18,9 +18,11 @@ export class MDTG {
 		"dec",
 	];
 
-  static #shortFormatRegex = /^[0-9]{6}[A-Z]$/;
-  static #shortenedFormatRegex = /^[0-9]{6}[A-Z](jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[0-9]{2}$/i;
-  static #longFormatRegex = /^[0-9]{8}[A-Z](jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[0-9]{2}$/i;
+	static #shortFormatRegex = /^[0-9]{6}[A-Z]$/;
+	static #shortenedFormatRegex =
+		/^[0-9]{6}[A-Z](jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[0-9]{2}$/i;
+	static #longFormatRegex =
+		/^[0-9]{8}[A-Z](jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[0-9]{2}$/i;
 
 	static #offset = {
 		Y: 12,
@@ -77,7 +79,7 @@ export class MDTG {
 	}
 
 	static isLongFormat(str) {
-		return MDTG.#longFormatRegex.test(str); 
+		return MDTG.#longFormatRegex.test(str);
 	}
 
 	#toShortMDT(timezone = "Z") {
@@ -159,7 +161,7 @@ export class MDTG {
 			MDTG.#months[newDate.getUTCMonth()],
 			normalizeNumber(newDate.getUTCFullYear() % 2000),
 		].join("");
-    if (!MDTG.isShortenedFormat(shortenedMDT)) {
+		if (!MDTG.isShortenedFormat(shortenedMDT)) {
 			throw new Error("There was an error while building shortened MDT");
 		}
 		return shortenedMDT;
