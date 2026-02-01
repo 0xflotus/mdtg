@@ -1,29 +1,29 @@
 {
-  "name": "mdtg",
-  "version": "1.2.0",
-  "main": "index.js",
-  "type": "module",
-  "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=8.6.0"
-  },
-  "scripts": {
-    "format": "prettier --check .",
-    "prelint": "npm run format",
-    "lint": "eslint .",
-    "test": "vitest run"
-  },
-  "keywords": [
-    "military",
-    "date",
-    "time"
-  ],
-  "author": "0xflotus",
-  "license": "MIT",
-  "description": "This package offers you methods to convert Date Objects to military date time and vice versa",
-  "devDependencies": {
-    "eslint": "9.39.2",
-    "prettier": "3.8.1",
-    "vitest": "4.0.18"
-  }
+	"name": "mdtg",
+	"version": "1.2.0",
+	"main": "index.js",
+	"type": "module",
+	"engines": {
+		"node": ">=18.0.0",
+		"npm": ">=8.6.0"
+	},
+	"scripts": {
+		"format": "biome format .",
+		"prelint": "npm run format",
+		"lint": "eslint .",
+		"test": "vitest run"
+	},
+	"keywords": [
+		"military",
+		"date",
+		"time"
+	],
+	"author": "0xflotus",
+	"license": "MIT",
+	"description": "This package offers you methods to convert Date Objects to military date time and vice versa",
+	"devDependencies": {
+		"@biomejs/biome": "2.3.13",
+		"eslint": "9.39.2",
+		"vitest": "4.0.18"
+	}
 }
