@@ -176,9 +176,9 @@ export class MDTG {
 
 	static parse(str) {
 		if (MDTG.isShortFormat(str)) {
-			const day = Number.parseInt(str.slice(0, 2));
-			const hours = Number.parseInt(str.slice(2, 4));
-			const minutes = Number.parseInt(str.slice(4, 6));
+			const day = Number.parseInt(str.slice(0, 2), 10);
+			const hours = Number.parseInt(str.slice(2, 4), 10);
+			const minutes = Number.parseInt(str.slice(4, 6), 10);
 			const timezoneOffset = str.slice(-1).toUpperCase();
 
 			const today = new Date();
@@ -187,7 +187,7 @@ export class MDTG {
 					today.getUTCFullYear(),
 					today.getUTCMonth(),
 					day,
-					hours + this.offset[timezoneOffset],
+					hours + MDTG.offset[timezoneOffset],
 					minutes,
 					0,
 					0,
@@ -195,18 +195,18 @@ export class MDTG {
 			);
 			return date;
 		} else if (MDTG.isShortenedFormat(str)) {
-			const day = Number.parseInt(str.slice(0, 2));
-			const hours = Number.parseInt(str.slice(2, 4));
-			const minutes = Number.parseInt(str.slice(4, 6));
+			const day = Number.parseInt(str.slice(0, 2), 10);
+			const hours = Number.parseInt(str.slice(2, 4), 10);
+			const minutes = Number.parseInt(str.slice(4, 6), 10);
 			const timezoneOffset = str.slice(6, 7).toUpperCase();
 			const month = MDTG.months.indexOf(str.slice(7, 10).toLowerCase());
-			const year = 2000 + Number.parseInt(str.slice(10, 12));
+			const year = 2000 + Number.parseInt(str.slice(10, 12), 10);
 			const date = new Date(
 				Date.UTC(
 					year,
 					month,
 					day,
-					hours + this.offset[timezoneOffset],
+					hours + MDTG.offset[timezoneOffset],
 					minutes,
 					0,
 					0,
@@ -214,19 +214,19 @@ export class MDTG {
 			);
 			return date;
 		} else if (MDTG.isLongFormat(str)) {
-			const day = Number.parseInt(str.slice(0, 2));
-			const hours = Number.parseInt(str.slice(2, 4));
-			const minutes = Number.parseInt(str.slice(4, 6));
-			const seconds = Number.parseInt(str.slice(6, 8));
+			const day = Number.parseInt(str.slice(0, 2), 10);
+			const hours = Number.parseInt(str.slice(2, 4), 10);
+			const minutes = Number.parseInt(str.slice(4, 6), 10);
+			const seconds = Number.parseInt(str.slice(6, 8), 10);
 			const timezoneOffset = str.slice(8, 9).toUpperCase();
 			const month = MDTG.months.indexOf(str.slice(9, 12).toLowerCase());
-			const year = 2000 + Number.parseInt(str.slice(12, 14));
+			const year = 2000 + Number.parseInt(str.slice(12, 14), 10);
 			const date = new Date(
 				Date.UTC(
 					year,
 					month,
 					day,
-					hours + this.offset[timezoneOffset],
+					hours + MDTG.offset[timezoneOffset],
 					minutes,
 					seconds,
 					0,
@@ -234,7 +234,7 @@ export class MDTG {
 			);
 			return date;
 		} else {
-			throw Error("There was an error while parsing the string " + str);
+			throw Error(`There was an error while parsing the string "${str}"`);
 		}
 	}
 
