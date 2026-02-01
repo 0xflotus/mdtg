@@ -1,3 +1,5 @@
 *.test.js
 biome.json
 .github/
+.vscode/
+.devcontainer.json
