@@ -1,211 +1,150 @@
 import { describe, expect, it } from "vitest";
 import { MDTG } from "./index.js";
 
-describe("MDTG Tests with Date of 12th August 2024 11:55:30", () => {
-  const dateToTest = new Date(Date.UTC(2024, 7, 12, 11, 55, 30, 0));
-  const mdtg = new MDTG(dateToTest);
+describe("MDTG", () => {
+  describe("toMDT()", () => {
+    const baseDate = new Date(Date.UTC(2024, 7, 12, 11, 55, 30, 0));
+    const mdtg = new MDTG(baseDate);
 
-  it("should convert to short MDT correctly", () => {
-    expect(mdtg.toMDT({ form: "short" })).toBe("121155Z");
+    describe("short form", () => {
+      it.each([
+        [{ form: "short" }, "121155Z"],
+        [{ form: "short", timezone: "AB" }, "121155Z"],
+        [{ form: "short", timezone: "A" }, "121255A"],
+        [{ form: "short", timezone: "Y" }, "112355Y"],
+        [{ form: "short", timezone: "y" }, "112355Y"],
+      ])("should convert %o → %s", (options, expected) => {
+        expect(mdtg.toMDT(options)).toBe(expected);
+      });
+    });
 
-    expect(mdtg.toMDT({ form: "short", timezone: "AB" })).toBe("121155Z");
+    describe("shortened form", () => {
+      it.each([
+        [{ form: "shortened" }, "121155Zaug24"],
+        [{ form: "shortened", timezone: "AB" }, "121155Zaug24"],
+        [{ form: "shortened", timezone: "A" }, "121255Aaug24"],
+        [{ form: "shortened", timezone: "Y" }, "112355Yaug24"],
+        [{ form: "shortened", timezone: "y" }, "112355Yaug24"],
+      ])("should convert %o → %s", (options, expected) => {
+        expect(mdtg.toMDT(options)).toBe(expected);
+      });
+    });
 
-    expect(mdtg.toMDT({ form: "short", timezone: "A" })).toBe("121255A");
+    describe("long form", () => {
+      it.each([
+        [{ form: "long" }, "12115530Zaug24"],
+        [{ form: "long", timezone: "AB" }, "12115530Zaug24"],
+        [{ form: "long", timezone: "A" }, "12125530Aaug24"],
+        [{ form: "long", timezone: "Y" }, "11235530Yaug24"],
+        [{ form: "long", timezone: "y" }, "11235530Yaug24"],
+      ])("should convert %o → %s", (options, expected) => {
+        expect(mdtg.toMDT(options)).toBe(expected);
+      });
+    });
 
-    expect(mdtg.toMDT({ form: "short", timezone: "Y" })).toBe("112355Y");
-
-    expect(mdtg.toMDT({ form: "short", timezone: "y" })).toBe("112355Y");
+    it("should default to long format", () => {
+      expect(mdtg.toMDT()).toBe("12115530Zaug24");
+    });
   });
 
-  it("should convert to shortened MDT correctly", () => {
-    expect(mdtg.toMDT({ form: "shortened" })).toBe("121155Zaug24");
+  describe("date boundary behaviour", () => {
+    it.each([
+      [
+        new Date(Date.UTC(2001, 11, 31, 23, 59, 0, 0)),
+        [
+          [{ form: "shortened" }, "312359Zdec01"],
+          [{ form: "shortened", timezone: "AB" }, "312359Zdec01"],
+          [{ form: "shortened", timezone: "A" }, "010059Ajan02"],
+          [{ form: "shortened", timezone: "Y" }, "311159Ydec01"],
+          [{ form: "shortened", timezone: "y" }, "311159Ydec01"],
+        ],
+      ],
+      [
+        new Date(Date.UTC(2002, 0, 1, 0, 0, 0, 0)),
+        [
+          [{ form: "shortened" }, "010000Zjan02"],
+          [{ form: "shortened", timezone: "AB" }, "010000Zjan02"],
+          [{ form: "shortened", timezone: "A" }, "010100Ajan02"],
+          [{ form: "shortened", timezone: "Y" }, "311200Ydec01"],
+          [{ form: "shortened", timezone: "y" }, "311200Ydec01"],
+        ],
+      ],
+    ])("should handle date %s correctly", (date, tests) => {
+      const mdtg = new MDTG(date);
 
-    expect(mdtg.toMDT({ form: "shortened", timezone: "AB" })).toBe(
-      "121155Zaug24",
-    );
-
-    expect(mdtg.toMDT({ form: "shortened", timezone: "A" })).toBe(
-      "121255Aaug24",
-    );
-
-    expect(mdtg.toMDT({ form: "shortened", timezone: "Y" })).toBe(
-      "112355Yaug24",
-    );
-
-    expect(mdtg.toMDT({ form: "shortened", timezone: "y" })).toBe(
-      "112355Yaug24",
-    );
+      tests.forEach(([options, expected]) => {
+        expect(mdtg.toMDT(options)).toBe(expected);
+      });
+    });
   });
 
-  it("should convert to long MDT correctly", () => {
-    expect(mdtg.toMDT({ form: "long" })).toBe("12115530Zaug24");
+  describe("dynamic date", () => {
+    it("should convert correctly", () => {
+      const now = new Date();
 
-    expect(mdtg.toMDT({ form: "long", timezone: "AB" })).toBe("12115530Zaug24");
-
-    expect(mdtg.toMDT({ form: "long", timezone: "A" })).toBe("12125530Aaug24");
-
-    expect(mdtg.toMDT({ form: "long", timezone: "Y" })).toBe("11235530Yaug24");
-
-    expect(mdtg.toMDT({ form: "long", timezone: "y" })).toBe("11235530Yaug24");
-  });
-
-  it("should default convert to long MDT correctly", () => {
-    expect(mdtg.toMDT()).toBe("12115530Zaug24");
-  });
-});
-
-describe("MDTG Tests with Date of 31st December 2001 23:59:30", () => {
-  const silvester2001 = new MDTG(
-    new Date(Date.UTC(2001, 11, 31, 23, 59, 0, 0)),
-  );
-
-  it("should convert to shortened MDT correctly", () => {
-    expect(silvester2001.toMDT({ form: "shortened" })).toBe("312359Zdec01");
-
-    expect(silvester2001.toMDT({ form: "shortened", timezone: "AB" })).toBe(
-      "312359Zdec01",
-    );
-
-    expect(silvester2001.toMDT({ form: "shortened", timezone: "A" })).toBe(
-      "010059Ajan02",
-    );
-
-    expect(silvester2001.toMDT({ form: "shortened", timezone: "Y" })).toBe(
-      "311159Ydec01",
-    );
-
-    expect(silvester2001.toMDT({ form: "shortened", timezone: "y" })).toBe(
-      "311159Ydec01",
-    );
-  });
-});
-
-describe("MDTG Tests with Date of 1st January 2002 00:00:00", () => {
-  const newYear2002 = new MDTG(new Date(Date.UTC(2002, 0, 1, 0, 0, 0, 0)));
-
-  it("should convert to shortened MDT correctly", () => {
-    expect(newYear2002.toMDT({ form: "shortened" })).toBe("010000Zjan02");
-
-    expect(newYear2002.toMDT({ form: "shortened", timezone: "AB" })).toBe(
-      "010000Zjan02",
-    );
-
-    expect(newYear2002.toMDT({ form: "shortened", timezone: "A" })).toBe(
-      "010100Ajan02",
-    );
-
-    expect(newYear2002.toMDT({ form: "shortened", timezone: "Y" })).toBe(
-      "311200Ydec01",
-    );
-
-    expect(newYear2002.toMDT({ form: "shortened", timezone: "y" })).toBe(
-      "311200Ydec01",
-    );
-  });
-});
-
-describe("MTDG Converting Tests with the 2nd of this month", () => {
-  const now = new Date();
-  const secondThisMonth = new MDTG(
-    new Date(
-      Date.UTC(
-        now.getUTCFullYear(),
-        now.getUTCMonth(),
-        2,
-        11,
-        27,
-        now.getUTCSeconds(),
-      ),
-    ),
-  );
-
-  it("should convert to short MDT correctly", () => {
-    expect(secondThisMonth.toMDT({ form: "short" })).toBe("021127Z");
-  });
-});
-
-describe("MDTG Parsing Tests", () => {
-  it("should parse long form and get the right date", () => {
-    expect(MDTG.parse("12115530Zaug24")).toEqual(
-      new Date(Date.UTC(2024, 7, 12, 11, 55, 30, 0)),
-    );
-
-    expect(MDTG.parse("12115530Aaug24")).toEqual(
-      new Date(Date.UTC(2024, 7, 12, 10, 55, 30, 0)),
-    );
-
-    expect(MDTG.parse("12115530Qaug24")).toEqual(
-      new Date(Date.UTC(2024, 7, 12, 15, 55, 30, 0)),
-    );
-
-    expect(MDTG.parse("12115530Yaug24")).toEqual(
-      new Date(Date.UTC(2024, 7, 12, 23, 55, 30, 0)),
-    );
-
-    expect(MDTG.parse("12115530Maug24")).toEqual(
-      new Date(Date.UTC(2024, 7, 11, 22, 55, 30, 0)),
-    );
-
-    expect(MDTG.parse("12115530maug24")).toEqual(
-      new Date(Date.UTC(2024, 7, 11, 22, 55, 30, 0)),
-    );
-
-    expect(MDTG.parse("12115530mAUG24")).toEqual(
-      new Date(Date.UTC(2024, 7, 11, 22, 55, 30, 0)),
-    );
-  });
-
-  it("should parse shortened form and get the right date", () => {
-    expect(MDTG.parse("121155Zaug24")).toEqual(
-      new Date(Date.UTC(2024, 7, 12, 11, 55, 0, 0)),
-    );
-
-    expect(MDTG.parse("121155ZAUG24")).toEqual(
-      new Date(Date.UTC(2024, 7, 12, 11, 55, 0, 0)),
-    );
-  });
-
-  it("should parse short form and get the right date", () => {
-    expect(MDTG.parse("121155Z")).toStrictEqual(
-      new Date(
-        Date.UTC(
-          new Date().getUTCFullYear(),
-          new Date().getUTCMonth(),
-          12,
-          11,
-          55,
-          0,
-          0,
+      const secondThisMonth = new MDTG(
+        new Date(
+          Date.UTC(
+            now.getUTCFullYear(),
+            now.getUTCMonth(),
+            2,
+            11,
+            27,
+            now.getUTCSeconds(),
+          ),
         ),
-      ),
-    );
+      );
 
-    expect(MDTG.parse("121155Q")).toStrictEqual(
-      new Date(
-        Date.UTC(
-          new Date().getUTCFullYear(),
-          new Date().getUTCMonth(),
-          12,
-          15,
-          55,
-          0,
-          0,
-        ),
-      ),
-    );
+      expect(secondThisMonth.toMDT({ form: "short" })).toBe("021127Z");
+    });
+  });
 
-    expect(MDTG.parse("121155A")).toStrictEqual(
-      new Date(
-        Date.UTC(
-          new Date().getUTCFullYear(),
-          new Date().getUTCMonth(),
-          12,
-          10,
-          55,
-          0,
-          0,
-        ),
-      ),
-    );
+  describe("parse()", () => {
+    describe("long form", () => {
+      it.each([
+        ["12115530Zaug24", new Date(Date.UTC(2024, 7, 12, 11, 55, 30, 0))],
+        ["12115530Aaug24", new Date(Date.UTC(2024, 7, 12, 10, 55, 30, 0))],
+        ["12115530Qaug24", new Date(Date.UTC(2024, 7, 12, 15, 55, 30, 0))],
+        ["12115530Yaug24", new Date(Date.UTC(2024, 7, 12, 23, 55, 30, 0))],
+        ["12115530Maug24", new Date(Date.UTC(2024, 7, 11, 22, 55, 30, 0))],
+        ["12115530maug24", new Date(Date.UTC(2024, 7, 11, 22, 55, 30, 0))],
+        ["12115530mAUG24", new Date(Date.UTC(2024, 7, 11, 22, 55, 30, 0))],
+      ])("should parse %s", (input, expected) => {
+        expect(MDTG.parse(input)).toEqual(expected);
+      });
+    });
+
+    describe("shortened form", () => {
+      it.each([
+        ["121155Zaug24", new Date(Date.UTC(2024, 7, 12, 11, 55, 0, 0))],
+        ["121155ZAUG24", new Date(Date.UTC(2024, 7, 12, 11, 55, 0, 0))],
+      ])("should parse %s", (input, expected) => {
+        expect(MDTG.parse(input)).toEqual(expected);
+      });
+    });
+
+    describe("short form", () => {
+      it.each([
+        ["121155Z", 11],
+        ["121155Q", 15],
+        ["121155A", 10],
+      ])("should parse %s", (input, expectedHour) => {
+        const now = new Date();
+
+        expect(MDTG.parse(input)).toStrictEqual(
+          new Date(
+            Date.UTC(
+              now.getUTCFullYear(),
+              now.getUTCMonth(),
+              12,
+              expectedHour,
+              55,
+              0,
+              0,
+            ),
+          ),
+        );
+      });
+    });
   });
 });
