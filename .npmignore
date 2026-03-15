@@ -1,5 +1,6 @@
-*.test.js
-biome.json
-.github/
-.vscode/
-.devcontainer.json
+*
+
+!index.js
+!package.json
+!README.md
+!LICENSE
