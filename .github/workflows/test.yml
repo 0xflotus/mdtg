@@ -4,9 +4,19 @@ on:
   push:
     branches:
       - main
+    paths:
+      - ".github/workflows/*.yml"
+      - "biome.json"
+      - "*.js"
+      - "package.json"
   pull_request:
     branches:
       - main
+    paths:
+      - ".github/workflows/*.yml"
+      - "biome.json"
+      - "*.js"
+      - "package.json"
 
 jobs:
   lint:
@@ -18,7 +28,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 24
-      - run: npm install
+      - run: npm ci
       - name: Check format
         run: npm run lint
   build:
@@ -35,5 +45,5 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm install
-      - run: npm test
+      - run: npm ci
+      - run: npm run test
