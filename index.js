@@ -2,7 +2,13 @@ const normalizeNumber = (number) => String(number).padStart(2, "0");
 const parseInteger = (input) => Number.parseInt(input, 10);
 
 export class MDTG {
-  #currentDate = null;
+  #currentDate;
+
+  static FORM = {
+    SHORT: "short",
+    SHORTENED: "shortened",
+    LONG: "long",
+  };
 
   static #months = [
     "jan",
@@ -55,7 +61,12 @@ export class MDTG {
   };
 
   constructor(date) {
+    if (date && !(date instanceof Date)) {
+      throw new TypeError("Expected Date object");
+    }
+
     const now = new Date();
+
     this.#currentDate =
       date ??
       new Date(
@@ -71,6 +82,26 @@ export class MDTG {
       );
   }
 
+  static #validateTimezone(tz) {
+    const key = tz?.toUpperCase();
+    return key in MDTG.#offset ? key : "Z";
+  }
+
+  #createDateWithOffset(offset) {
+    const d = this.#currentDate;
+
+    return new Date(
+      Date.UTC(
+        d.getUTCFullYear(),
+        d.getUTCMonth(),
+        d.getUTCDate(),
+        d.getUTCHours() - offset,
+        d.getUTCMinutes(),
+        d.getUTCSeconds(),
+      ),
+    );
+  }
+
   static isShortFormat(str) {
     return MDTG.#shortFormatRegex.test(str);
   }
@@ -84,161 +115,135 @@ export class MDTG {
   }
 
   #toShortMDT(timezone = "Z") {
-    const tz = !/^[A-Z]$/.test(timezone.toUpperCase()) ? "Z" : timezone;
+    const tz = MDTG.#validateTimezone(timezone);
+    const date = this.#createDateWithOffset(MDTG.#offset[tz]);
 
-    const newDate = new Date(
-      Date.UTC(
-        this.#currentDate.getUTCFullYear(),
-        this.#currentDate.getUTCMonth(),
-        this.#currentDate.getUTCDate(),
-        this.#currentDate.getUTCHours() - MDTG.#offset[tz.toUpperCase()],
-        this.#currentDate.getUTCMinutes(),
-      ),
-    );
-    const shortMDT = [
-      newDate.getUTCDate(),
-      newDate.getUTCHours(),
-      newDate.getUTCMinutes(),
-    ]
+    const result = [date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes()]
       .map(normalizeNumber)
-      .concat(tz.toUpperCase())
+      .concat(tz)
       .join("");
-    if (!MDTG.isShortFormat(shortMDT)) {
-      throw new Error("There was an error while building short MDT");
+
+    if (!MDTG.isShortFormat(result)) {
+      throw new Error("Failed to build short MDTG");
     }
-    return shortMDT;
+
+    return result;
   }
 
   #toLongMDT(timezone = "Z") {
-    const tz = !/^[A-Z]$/.test(timezone.toUpperCase()) ? "Z" : timezone;
+    const tz = MDTG.#validateTimezone(timezone);
+    const date = this.#createDateWithOffset(MDTG.#offset[tz]);
 
-    const newDate = new Date(
-      Date.UTC(
-        this.#currentDate.getUTCFullYear(),
-        this.#currentDate.getUTCMonth(),
-        this.#currentDate.getUTCDate(),
-        this.#currentDate.getUTCHours() - MDTG.#offset[tz.toUpperCase()],
-        this.#currentDate.getUTCMinutes(),
-        this.#currentDate.getUTCSeconds(),
-      ),
-    );
-    const longMDT = [
-      newDate.getUTCDate(),
-      newDate.getUTCHours(),
-      newDate.getUTCMinutes(),
-      newDate.getUTCSeconds(),
+    const result = [
+      date.getUTCDate(),
+      date.getUTCHours(),
+      date.getUTCMinutes(),
+      date.getUTCSeconds(),
     ]
       .map(normalizeNumber)
       .concat(
-        tz.toUpperCase(),
-        MDTG.#months[newDate.getUTCMonth()],
-        normalizeNumber(newDate.getUTCFullYear() % 2000),
+        tz,
+        MDTG.#months[date.getUTCMonth()],
+        normalizeNumber(date.getUTCFullYear() % 100),
       )
       .join("");
-    if (!MDTG.isLongFormat(longMDT)) {
-      throw new Error("There was an error while building long MDT");
+
+    if (!MDTG.isLongFormat(result)) {
+      throw new Error("Failed to build long MDTG");
     }
-    return longMDT;
+
+    return result;
   }
 
   #toShortenedMDT(timezone = "Z") {
-    const tz = !/^[A-Z]$/.test(timezone.toUpperCase()) ? "Z" : timezone;
-    const newDate = new Date(
-      Date.UTC(
-        this.#currentDate.getUTCFullYear(),
-        this.#currentDate.getUTCMonth(),
-        this.#currentDate.getUTCDate(),
-        this.#currentDate.getUTCHours() - MDTG.#offset[tz.toUpperCase()],
-        this.#currentDate.getUTCMinutes(),
-        this.#currentDate.getUTCSeconds(),
-      ),
-    );
-    const shortenedMDT = [
-      this.#toShortMDT(tz.toUpperCase()),
-      MDTG.#months[newDate.getUTCMonth()],
-      normalizeNumber(newDate.getUTCFullYear() % 2000),
+    const tz = MDTG.#validateTimezone(timezone);
+    const date = this.#createDateWithOffset(MDTG.#offset[tz]);
+
+    const result = [
+      this.#toShortMDT(tz),
+      MDTG.#months[date.getUTCMonth()],
+      normalizeNumber(date.getUTCFullYear() % 100),
     ].join("");
-    if (!MDTG.isShortenedFormat(shortenedMDT)) {
-      throw new Error("There was an error while building shortened MDT");
+
+    if (!MDTG.isShortenedFormat(result)) {
+      throw new Error("Failed to build shortened MDTG");
     }
-    return shortenedMDT;
+
+    return result;
   }
 
-  toMDT(options) {
-    if (options?.form === "short") {
-      return this.#toShortMDT(options?.timezone);
-    } else if (options?.form === "shortened") {
-      return this.#toShortenedMDT(options?.timezone);
-    } else {
-      return this.#toLongMDT(options?.timezone);
+  toMDT({ form = MDTG.FORM.LONG, timezone = "Z" } = {}) {
+    switch (form) {
+      case MDTG.FORM.SHORT:
+        return this.#toShortMDT(timezone);
+      case MDTG.FORM.SHORTENED:
+        return this.#toShortenedMDT(timezone);
+      default:
+        return this.#toLongMDT(timezone);
     }
+  }
+
+  static #parseShort(str) {
+    const day = parseInteger(str.slice(0, 2));
+    const hours = parseInteger(str.slice(2, 4));
+    const minutes = parseInteger(str.slice(4, 6));
+    const tz = str.slice(6, 7).toUpperCase();
+
+    const today = new Date();
+
+    return new Date(
+      Date.UTC(
+        today.getUTCFullYear(),
+        today.getUTCMonth(),
+        day,
+        hours + MDTG.#offset[tz],
+        minutes,
+      ),
+    );
+  }
+
+  static #parseShortened(str) {
+    const day = parseInteger(str.slice(0, 2));
+    const hours = parseInteger(str.slice(2, 4));
+    const minutes = parseInteger(str.slice(4, 6));
+    const tz = str.slice(6, 7).toUpperCase();
+
+    const month = MDTG.#months.indexOf(str.slice(7, 10).toLowerCase());
+    if (month === -1) throw new Error("Invalid month");
+
+    const year = 2000 + parseInteger(str.slice(10, 12));
+
+    return new Date(
+      Date.UTC(year, month, day, hours + MDTG.#offset[tz], minutes),
+    );
+  }
+
+  static #parseLong(str) {
+    const day = parseInteger(str.slice(0, 2));
+    const hours = parseInteger(str.slice(2, 4));
+    const minutes = parseInteger(str.slice(4, 6));
+    const seconds = parseInteger(str.slice(6, 8));
+    const tz = str.slice(8, 9).toUpperCase();
+
+    const month = MDTG.#months.indexOf(str.slice(9, 12).toLowerCase());
+    if (month === -1) throw new Error("Invalid month");
+
+    const year = 2000 + parseInteger(str.slice(12, 14));
+
+    return new Date(
+      Date.UTC(year, month, day, hours + MDTG.#offset[tz], minutes, seconds),
+    );
   }
 
   static parse(str) {
-    if (MDTG.isShortFormat(str)) {
-      const day = parseInteger(str.slice(0, 2));
-      const hours = parseInteger(str.slice(2, 4));
-      const minutes = parseInteger(str.slice(4, 6));
-      const timezoneOffset = str.slice(-1).toUpperCase();
+    if (MDTG.isShortFormat(str)) return MDTG.#parseShort(str);
+    if (MDTG.isShortenedFormat(str)) return MDTG.#parseShortened(str);
+    if (MDTG.isLongFormat(str)) return MDTG.#parseLong(str);
 
-      const today = new Date();
-      const date = new Date(
-        Date.UTC(
-          today.getUTCFullYear(),
-          today.getUTCMonth(),
-          day,
-          hours + MDTG.#offset[timezoneOffset],
-          minutes,
-          0,
-          0,
-        ),
-      );
-      return date;
-    } else if (MDTG.isShortenedFormat(str)) {
-      const day = parseInteger(str.slice(0, 2));
-      const hours = parseInteger(str.slice(2, 4));
-      const minutes = parseInteger(str.slice(4, 6));
-      const timezoneOffset = str.slice(6, 7).toUpperCase();
-      const month = MDTG.#months.indexOf(str.slice(7, 10).toLowerCase());
-      const year = 2000 + parseInteger(str.slice(10, 12));
-      const date = new Date(
-        Date.UTC(
-          year,
-          month,
-          day,
-          hours + MDTG.#offset[timezoneOffset],
-          minutes,
-          0,
-          0,
-        ),
-      );
-      return date;
-    } else if (MDTG.isLongFormat(str)) {
-      const day = parseInteger(str.slice(0, 2));
-      const hours = parseInteger(str.slice(2, 4));
-      const minutes = parseInteger(str.slice(4, 6));
-      const seconds = parseInteger(str.slice(6, 8));
-      const timezoneOffset = str.slice(8, 9).toUpperCase();
-      const month = MDTG.#months.indexOf(str.slice(9, 12).toLowerCase());
-      const year = 2000 + parseInteger(str.slice(12, 14));
-      const date = new Date(
-        Date.UTC(
-          year,
-          month,
-          day,
-          hours + MDTG.#offset[timezoneOffset],
-          minutes,
-          seconds,
-          0,
-        ),
-      );
-      return date;
-    } else {
-      throw Error(`There was an error while parsing the string "${str}"`);
-    }
+    throw new Error(`Invalid MDTG string "${str}"`);
   }
 
   toDate() {
-    return this.#currentDate;
+    return new Date(this.#currentDate);
   }
 }
