@@ -37,8 +37,8 @@ jobs:
     needs: lint
     strategy:
       matrix:
-        os: [ubuntu-latest, ubuntu-24.04-arm]
-        node-version: [22, 24]
+        os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest, windows-latest]
+        node-version: [22, 24, 26, latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
