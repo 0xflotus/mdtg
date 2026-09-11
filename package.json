@@ -9,8 +9,9 @@
   "scripts": {
     "coverage": "vitest run --coverage",
     "format": "biome format .",
-    "prelint": "npm run format",
+    "prelint": "npm run format && npm run prettier",
     "lint": "biome lint .",
+    "prettier": "prettier **/*.yml",
     "test": "vitest run"
   },
   "keywords": [
@@ -22,8 +23,9 @@
   "license": "MIT",
   "description": "This package offers you methods to convert Date Objects to military date time and vice versa",
   "devDependencies": {
-    "@biomejs/biome": "2.5.12",
+    "@biomejs/biome": "2.5.13",
     "@vitest/coverage-v8": "5.0.0",
+    "prettier": "3.9.6",
     "vitest": "5.0.0"
   }
 }
