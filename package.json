@@ -23,7 +23,7 @@
   "description": "This package offers you methods to convert Date Objects to military date time and vice versa",
   "devDependencies": {
     "@biomejs/biome": "2.4.7",
-    "@vitest/coverage-v8": "4.1.0",
-    "vitest": "4.1.0"
+    "@vitest/coverage-v8": "5.0.0",
+    "vitest": "5.0.0"
   }
 }
