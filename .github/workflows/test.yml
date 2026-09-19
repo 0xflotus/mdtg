@@ -27,7 +27,7 @@ jobs:
       - run: npm ci
       - name: Check format
         run: npm run lint
-  build:
+  test:
     name: Testing
     needs: lint
     strategy:
@@ -56,3 +56,31 @@ jobs:
           cache: "npm"
       - run: npm ci
       - run: npm run test
+  bench:
+    name: Benchmarking
+    needs: [lint, test]
+    strategy:
+      matrix:
+        os:
+          [
+            ubuntu-24.04,
+            ubuntu-26.04,
+            ubuntu-24.04-arm,
+            ubuntu-26.04-arm,
+            macos-latest,
+            macos-26-intel,
+            windows-11-arm,
+            windows-2025,
+            windows-latest,
+          ]
+        node-version: [22, 24, 25, 26, latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - run: npm ci
+      - run: npm run bench
