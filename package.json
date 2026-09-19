@@ -7,6 +7,7 @@
     "node": ">=24.0.0"
   },
   "scripts": {
+    "bench": "vitest bench --run",
     "coverage": "vitest run --coverage",
     "format": "biome format .",
     "prelint": "npm run format && npm run prettier",
