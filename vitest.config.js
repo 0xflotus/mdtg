@@ -5,7 +5,6 @@ export default defineConfig({
     include: ["**/*.test.js"],
     benchmark: {
       include: ["**/*.bench.js"],
-      suppressExportGetterWarnings: true,
     },
   },
 });
