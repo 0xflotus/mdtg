@@ -1,15 +1,19 @@
 {
   "name": "mdtg",
   "version": "2.1.1",
-  "main": "index.js",
+  "main": "src/index.js",
   "type": "module",
+  "exports": {
+    ".": "./src/index.js"
+  },
   "engines": {
-    "node": ">=24.0.0"
+    "node": ">=22.0.0",
+    "npm": ">=10.0.0"
   },
   "scripts": {
     "bench": "vitest bench --run",
     "coverage": "vitest run --coverage",
-    "format": "biome format .",
+    "format": "biome check .",
     "prelint": "npm run format && npm run prettier",
     "lint": "biome lint .",
     "prettier": "prettier **/*.yml",
