@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
 import {
   FORM,
+  formatMDTG,
   isLongFormat,
   isShortenedFormat,
   isShortFormat,
   parse,
-  formatMDTG,
 } from "./src/index.js";
 
 describe("formatMDTG()", () => {

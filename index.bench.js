@@ -1,10 +1,10 @@
 import { describe, test } from "vitest";
 import {
+  formatMDTG,
   isLongFormat,
   isShortenedFormat,
   isShortFormat,
   parse,
-  formatMDTG,
 } from "./src/index.js";
 
 const date = new Date(Date.UTC(2024, 7, 12, 11, 55, 30));
