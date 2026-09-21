@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import {
   FORM,
   formatMDTG,
@@ -95,6 +95,21 @@ describe("parse()", () => {
     expect(parse("121155Z")).toEqual(
       new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 12, 11, 55)),
     );
+  });
+
+  it.each([
+    ["121355M", new Date(Date.UTC(2024, 7, 12, 0, 55))],
+    ["121355A", new Date(Date.UTC(2024, 7, 12, 12, 55))],
+    ["121355Z", new Date(Date.UTC(2024, 7, 12, 13, 55))],
+  ])("parses short form %s with its timezone offset", (value, expected) => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(Date.UTC(2024, 7, 12)));
+
+    try {
+      expect(parse(value)).toEqual(expected);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it.each(["121155", "abcdefg", "12115530Zfoo24", "12115530!aug24", ""])(
