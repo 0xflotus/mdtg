@@ -1,26 +1,26 @@
 import { describe, test } from "vitest";
 import {
+  formatMDTG,
   isLongFormat,
   isShortenedFormat,
   isShortFormat,
   parse,
-  toMDT,
 } from "./src/index.js";
 
 const date = new Date(Date.UTC(2024, 7, 12, 11, 55, 30));
 
 describe("MDTG benchmarks", () => {
   test("functional formatting API", async ({ bench }) => {
-    await bench("toMDT - short", () => {
-      toMDT(date, { form: "short" });
+    await bench("formatMDTG - short", () => {
+      formatMDTG(date, { form: "short" });
     }).run();
 
-    await bench("toMDT - shortened", () => {
-      toMDT(date, { form: "shortened" });
+    await bench("formatMDTG - shortened", () => {
+      formatMDTG(date, { form: "shortened" });
     }).run();
 
-    await bench("toMDT - long", () => {
-      toMDT(date, { form: "long" });
+    await bench("formatMDTG - long", () => {
+      formatMDTG(date, { form: "long" });
     }).run();
   });
 

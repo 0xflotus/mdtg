@@ -61,7 +61,7 @@ const buildShortened = (date, timezone) => {
   return result;
 };
 
-export const toMDT = (
+export const formatMDTG = (
   date = new Date(),
   { form = FORM.LONG, timezone: timezoneInput = "Z" } = {},
 ) => {
