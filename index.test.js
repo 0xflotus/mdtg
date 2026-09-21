@@ -5,10 +5,10 @@ import {
   isShortenedFormat,
   isShortFormat,
   parse,
-  toMDT,
+  formatMDTG,
 } from "./src/index.js";
 
-describe("toMDT()", () => {
+describe("formatMDTG()", () => {
   const date = new Date(Date.UTC(2024, 7, 12, 11, 55, 30));
 
   it.each([
@@ -20,7 +20,7 @@ describe("toMDT()", () => {
     [{ form: FORM.SHORT, timezone: "Y" }, "112355Y"],
     [{ form: FORM.SHORT, timezone: "y" }, "112355Y"],
   ])("formats %o as %s", (options, expected) => {
-    expect(toMDT(date, options)).toBe(expected);
+    expect(formatMDTG(date, options)).toBe(expected);
   });
 
   it("uses the current date by default", () => {
@@ -29,13 +29,13 @@ describe("toMDT()", () => {
       now.getUTCHours(),
     ).padStart(2, "0")}${String(now.getUTCMinutes()).padStart(2, "0")}Z`;
 
-    expect(toMDT(undefined, { form: FORM.SHORT })).toBe(expected);
+    expect(formatMDTG(undefined, { form: FORM.SHORT })).toBe(expected);
   });
 
   it.each(["2024", 123, {}, new Date("invalid")])(
     "rejects %s as a date",
     (invalidDate) => {
-      expect(() => toMDT(invalidDate)).toThrow(TypeError);
+      expect(() => formatMDTG(invalidDate)).toThrow(TypeError);
     },
   );
 });
@@ -63,7 +63,7 @@ describe("date boundaries", () => {
       "291200Zfeb24",
     ],
   ])("formats %s correctly", (date, options, expected) => {
-    expect(toMDT(date, options)).toBe(expected);
+    expect(formatMDTG(date, options)).toBe(expected);
   });
 });
 
@@ -114,5 +114,5 @@ describe("parse()", () => {
 
 it("round trips a date", () => {
   const date = new Date(Date.UTC(2024, 7, 12, 11, 55, 30));
-  expect(parse(toMDT(date))).toEqual(date);
+  expect(parse(formatMDTG(date))).toEqual(date);
 });

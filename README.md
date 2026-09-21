@@ -11,13 +11,13 @@ npm install mdtg
 ### Usage
 
 ```js
-import { parse, toMDT } from "mdtg";
+import { parse, formatMDTG } from "mdtg";
 
 const date = new Date();
 
-console.log(toMDT(date, { form: "short" }));
-console.log(toMDT(date, { form: "shortened" }));
-console.log(toMDT(date, { form: "long" }));
+console.log(formatMDTG(date, { form: "short" }));
+console.log(formatMDTG(date, { form: "shortened" }));
+console.log(formatMDTG(date, { form: "long" }));
 
 console.log(parse("12135530Zaug24"));
 console.log(parse("12135530Asep24"));
@@ -27,7 +27,7 @@ console.log(parse("121355M"));
 
 ### API
 
-#### `toMDT(date, options)`
+#### `formatMDTG(date, options)`
 
 Converts a valid `Date` to a date-time group. `date` defaults to the current
 date. `options.form` is `"short"`, `"shortened"`, or `"long"` (the default).
@@ -35,7 +35,7 @@ date. `options.form` is `"short"`, `"shortened"`, or `"long"` (the default).
 lowercase letters are accepted and unknown values default to `Z`.
 
 ```js
-toMDT(new Date(Date.UTC(2024, 7, 12, 11, 55, 30)), {
+formatMDTG(new Date(Date.UTC(2024, 7, 12, 11, 55, 30)), {
   form: "long",
   timezone: "A",
 });
