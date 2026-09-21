@@ -23,5 +23,5 @@ updates:
       time: "09:00"
       timezone: "Europe/Berlin"
     labels:
-      - "github-actions"
+      - "github_actions"
     open-pull-requests-limit: 5
