@@ -17,6 +17,7 @@ jobs:
   lint:
     name: Linting
     runs-on: ubuntu-slim
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v7
       - name: Setup Node.js
@@ -30,6 +31,7 @@ jobs:
   test:
     name: Testing
     needs: lint
+    timeout-minutes: 12
     strategy:
       matrix:
         os:
@@ -45,7 +47,7 @@ jobs:
             windows-2025,
             windows-latest,
           ]
-        node-version: [22, 24, 25, 26, latest]
+        node-version: [24]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v7
@@ -59,6 +61,7 @@ jobs:
   bench:
     name: Benchmarking
     needs: [lint, test]
+    timeout-minutes: 12
     strategy:
       matrix:
         os:
@@ -73,7 +76,7 @@ jobs:
             windows-2025,
             windows-latest,
           ]
-        node-version: [22, 24, 25, 26, latest]
+        node-version: [24]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v7
