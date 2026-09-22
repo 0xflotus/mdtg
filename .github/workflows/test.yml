@@ -9,9 +9,8 @@ on:
       - main
     paths:
       - ".github/**/*.yml"
-      - "biome.json"
+      - "*.json"
       - "*.js"
-      - "package.json"
 
 jobs:
   lint:
@@ -47,7 +46,7 @@ jobs:
             windows-2025,
             windows-latest,
           ]
-        node-version: [24]
+        node-version: [22, 24, 26, latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v7
@@ -76,7 +75,7 @@ jobs:
             windows-2025,
             windows-latest,
           ]
-        node-version: [24]
+        node-version: [22, 24, 26, latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v7
