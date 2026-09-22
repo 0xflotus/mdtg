@@ -7,7 +7,7 @@
     ".": "./src/index.js"
   },
   "engines": {
-    "node": ">=22.0.0",
+    "node": ">=24.0.0",
     "npm": ">=10.0.0"
   },
   "scripts": {
@@ -16,6 +16,7 @@
     "format": "biome check .",
     "prelint": "npm run format && npm run prettier",
     "lint": "biome lint .",
+    "knip": "knip",
     "prettier": "prettier **/*.yml",
     "test": "vitest run"
   },
@@ -30,6 +31,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.5.14",
     "@vitest/coverage-v8": "5.0.1",
+    "knip": "5.88.1",
     "prettier": "3.9.8",
     "vitest": "5.0.1"
   }
