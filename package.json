@@ -31,8 +31,8 @@
   "devDependencies": {
     "@biomejs/biome": "2.5.14",
     "@vitest/coverage-v8": "5.0.1",
-    "knip": "6.37.0",
-    "prettier": "3.9.8",
+    "knip": "6.38.0",
+    "prettier": "3.9.9",
     "vitest": "5.0.1"
   }
 }
