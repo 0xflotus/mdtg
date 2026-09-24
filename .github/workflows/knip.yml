@@ -11,7 +11,7 @@ on:
 jobs:
   knip:
     name: Knip
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
       - uses: actions/checkout@v7
