@@ -6,8 +6,8 @@ describe("formatMDTG()", () => {
 
   it.each([
     [{ form: "short" }, "121155Z"],
-    [{ form: "shortened" }, "121155Zaug24"],
-    [{ form: "long" }, "12115530Zaug24"],
+    [{ form: "standard" }, "121155Zaug24"],
+    [{ form: "extended" }, "12115530Zaug24"],
     [{}, "12115530Zaug24"],
     [{ timezone: "A" }, "12125530Aaug24"],
     [{ form: "short", timezone: "Y" }, "112355Y"],
@@ -37,24 +37,20 @@ describe("date boundaries", () => {
   it.each([
     [
       new Date(Date.UTC(2001, 11, 31, 23, 59)),
-      { form: "shortened", timezone: "A" },
+      { form: "standard", timezone: "A" },
       "010059Ajan02",
     ],
     [
       new Date(Date.UTC(2002, 0, 1)),
-      { form: "shortened", timezone: "Y" },
+      { form: "standard", timezone: "Y" },
       "311200Ydec01",
     ],
     [
       new Date(Date.UTC(2024, 7, 31, 23, 30)),
-      { form: "shortened", timezone: "A" },
+      { form: "standard", timezone: "A" },
       "010030Asep24",
     ],
-    [
-      new Date(Date.UTC(2024, 1, 29, 12)),
-      { form: "shortened" },
-      "291200Zfeb24",
-    ],
+    [new Date(Date.UTC(2024, 1, 29, 12)), { form: "standard" }, "291200Zfeb24"],
   ])("formats %s correctly", (date, options, expected) => {
     expect(formatMDTG(date, options)).toBe(expected);
   });

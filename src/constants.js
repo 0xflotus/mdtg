@@ -43,13 +43,13 @@ export const OFFSETS = Object.freeze({
 });
 
 export const SHORT_FORMAT_REGEX = /^[0-9]{6}[A-Z]$/;
-export const SHORTENED_FORMAT_REGEX =
+export const STANDARD_FORMAT_REGEX =
   /^[0-9]{6}[A-Z](jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[0-9]{2}$/i;
-export const LONG_FORMAT_REGEX =
+export const EXTENDED_FORMAT_REGEX =
   /^[0-9]{8}[A-Z](jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[0-9]{2}$/i;
 
 export const FORM = Object.freeze({
   SHORT: "short",
-  SHORTENED: "shortened",
-  LONG: "long",
+  STANDARD: "standard",
+  EXTENDED: "extended",
 });

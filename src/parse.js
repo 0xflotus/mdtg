@@ -1,8 +1,8 @@
 import { MONTHS, OFFSETS } from "./constants.js";
 import {
-  isLongFormat,
-  isShortenedFormat,
+  isExtendedFormat,
   isShortFormat,
+  isStandardFormat,
   validateDateTime,
 } from "./validation.js";
 
@@ -62,14 +62,14 @@ const parseWithMonth = (value, { hasSeconds, timezoneIndex, monthStart }) => {
 
 export const parseMDTG = (value) => {
   if (isShortFormat(value)) return parseShort(value);
-  if (isShortenedFormat(value)) {
+  if (isStandardFormat(value)) {
     return parseWithMonth(value, {
       hasSeconds: false,
       timezoneIndex: 6,
       monthStart: 7,
     });
   }
-  if (isLongFormat(value)) {
+  if (isExtendedFormat(value)) {
     return parseWithMonth(value, {
       hasSeconds: true,
       timezoneIndex: 8,

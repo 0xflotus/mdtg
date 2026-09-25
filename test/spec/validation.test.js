@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 import {
-  isLongFormat,
+  isExtendedFormat,
   isMDTG,
-  isShortenedFormat,
   isShortFormat,
+  isStandardFormat,
 } from "../../src/index.js";
 
 describe("short format validation", () => {
@@ -20,29 +20,29 @@ describe("short format validation", () => {
   });
 });
 
-describe("shortened format validation", () => {
+describe("standard format validation", () => {
   it.each([
-    ["121155Zaug24", isShortenedFormat, true],
-    ["invalid", isShortenedFormat, false],
-    ["121155Z", isShortenedFormat, false],
-    ["12115530Zaug24", isShortenedFormat, false],
-    [null, isShortenedFormat, false],
-    [[], isShortenedFormat, false],
-    [{}, isShortenedFormat, false],
+    ["121155Zaug24", isStandardFormat, true],
+    ["invalid", isStandardFormat, false],
+    ["121155Z", isStandardFormat, false],
+    ["12115530Zaug24", isStandardFormat, false],
+    [null, isStandardFormat, false],
+    [[], isStandardFormat, false],
+    [{}, isStandardFormat, false],
   ])("checks %s", (value, validator, expected) => {
     expect(validator(value)).toBe(expected);
   });
 });
 
-describe("long format validation", () => {
+describe("extended format validation", () => {
   it.each([
-    ["12115530Zaug24", isLongFormat, true],
-    ["invalid", isLongFormat, false],
-    ["121155Z", isLongFormat, false],
-    ["121155Zaug24", isLongFormat, false],
-    [null, isLongFormat, false],
-    [[], isLongFormat, false],
-    [{}, isLongFormat, false],
+    ["12115530Zaug24", isExtendedFormat, true],
+    ["invalid", isExtendedFormat, false],
+    ["121155Z", isExtendedFormat, false],
+    ["121155Zaug24", isExtendedFormat, false],
+    [null, isExtendedFormat, false],
+    [[], isExtendedFormat, false],
+    [{}, isExtendedFormat, false],
   ])("checks %s", (value, validator, expected) => {
     expect(validator(value)).toBe(expected);
   });

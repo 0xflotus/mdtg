@@ -1,21 +1,21 @@
 import {
-  LONG_FORMAT_REGEX,
+  EXTENDED_FORMAT_REGEX,
   OFFSETS,
   SHORT_FORMAT_REGEX,
-  SHORTENED_FORMAT_REGEX,
+  STANDARD_FORMAT_REGEX,
 } from "./constants.js";
 
 export const isShortFormat = (value) =>
   typeof value === "string" && SHORT_FORMAT_REGEX.test(value);
 
-export const isShortenedFormat = (value) =>
-  typeof value === "string" && SHORTENED_FORMAT_REGEX.test(value);
+export const isStandardFormat = (value) =>
+  typeof value === "string" && STANDARD_FORMAT_REGEX.test(value);
 
-export const isLongFormat = (value) =>
-  typeof value === "string" && LONG_FORMAT_REGEX.test(value);
+export const isExtendedFormat = (value) =>
+  typeof value === "string" && EXTENDED_FORMAT_REGEX.test(value);
 
 export const isMDTG = (value) =>
-  isShortFormat(value) || isShortenedFormat(value) || isLongFormat(value);
+  isShortFormat(value) || isStandardFormat(value) || isExtendedFormat(value);
 
 export const validateDate = (date) => {
   if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
