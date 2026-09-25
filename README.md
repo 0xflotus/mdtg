@@ -11,7 +11,7 @@ npm install mdtg
 ### Usage
 
 ```js
-import { FORM, formatMDTG, parse } from "mdtg";
+import { FORM, formatMDTG, parseMDTG } from "mdtg";
 
 const date = new Date(Date.UTC(2024, 7, 12, 11, 55, 30));
 
@@ -21,10 +21,10 @@ formatMDTG(date);                            // "12115530Zaug24" (long by defaul
 
 // A is UTC+1, so local time is one hour ahead of UTC.
 const value = formatMDTG(date, { timezone: "A" }); // "12125530Aaug24"
-parse(value).toISOString();                       // "2024-08-12T11:55:30.000Z"
+parseMDTG(value).toISOString();                       // "2024-08-12T11:55:30.000Z"
 
-parse("121155Zaug24").toISOString(); // "2024-08-12T11:55:00.000Z"
-parse("121155Z");                    // month and year are current UTC month/year
+parseMDTG("121155Zaug24").toISOString(); // "2024-08-12T11:55:00.000Z"
+parseMDTG("121155Z");                    // month and year are current UTC month/year
 ```
 
 ### API
@@ -46,7 +46,7 @@ formatMDTG(new Date(Date.UTC(2024, 7, 12, 11, 55, 30)), {
 // "12125530Aaug24"
 ```
 
-#### `parse(value)`
+#### `parseMDTG(value)`
 
 Parses short (`121155Z`), shortened (`121155Zaug24`), and long
 (`12115530Zaug24`) formats into a `Date`. Short values use the current UTC
@@ -54,13 +54,13 @@ month and year and have no seconds. Years are interpreted as `2000` through
 `2099`.
 
 ```js
-import { parse } from "mdtg";
+import { parseMDTG } from "mdtg";
 
-parse("121155Zaug24").toISOString();   // "2024-08-12T11:55:00.000Z"
-parse("12115530Zaug24").toISOString(); // "2024-08-12T11:55:30.000Z"
-parse("12125530Aaug24").toISOString(); // "2024-08-12T11:55:30.000Z"
+parseMDTG("121155Zaug24").toISOString();   // "2024-08-12T11:55:00.000Z"
+parseMDTG("12115530Zaug24").toISOString(); // "2024-08-12T11:55:30.000Z"
+parseMDTG("12125530Aaug24").toISOString(); // "2024-08-12T11:55:30.000Z"
 
-parse("121155Z"); // uses the current UTC month and year
+parseMDTG("121155Z"); // uses the current UTC month and year
 ```
 
 Invalid calendar dates and times, such as `310224Zfeb24` or `126155Z`, throw a

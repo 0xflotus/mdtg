@@ -60,7 +60,7 @@ const parseWithMonth = (value, { hasSeconds, timezoneIndex, monthStart }) => {
   return new Date(Date.UTC(...dateParts));
 };
 
-export const parse = (value) => {
+export const parseMDTG = (value) => {
   if (isShortFormat(value)) return parseShort(value);
   if (isShortenedFormat(value)) {
     return parseWithMonth(value, {

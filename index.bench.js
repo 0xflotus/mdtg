@@ -5,7 +5,7 @@ import {
   isMDTGFormat,
   isShortenedFormat,
   isShortFormat,
-  parse,
+  parseMDTG,
 } from "./src/index.js";
 
 const date = new Date(Date.UTC(2024, 7, 12, 11, 55, 30));
@@ -27,15 +27,15 @@ describe("MDTG benchmarks", () => {
 
   test("parsing and validation API", async ({ bench }) => {
     await bench("parse - short", () => {
-      parse("121155Z");
+      parseMDTG("121155Z");
     }).run();
 
     await bench("parse - shortened", () => {
-      parse("121155Zaug24");
+      parseMDTG("121155Zaug24");
     }).run();
 
     await bench("parse - long", () => {
-      parse("12115530Zaug24");
+      parseMDTG("12115530Zaug24");
     }).run();
 
     await bench("isShortFormat", () => {
