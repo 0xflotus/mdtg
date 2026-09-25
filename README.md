@@ -53,18 +53,36 @@ Parses short (`121155Z`), shortened (`121155Zaug24`), and long
 month and year and have no seconds. Years are interpreted as `2000` through
 `2099`.
 
+```js
+import { parse } from "mdtg";
+
+parse("121155Zaug24").toISOString();   // "2024-08-12T11:55:00.000Z"
+parse("12115530Zaug24").toISOString(); // "2024-08-12T11:55:30.000Z"
+parse("12125530Aaug24").toISOString(); // "2024-08-12T11:55:30.000Z"
+
+parse("121155Z"); // uses the current UTC month and year
+```
+
 Invalid calendar dates and times, such as `310224Zfeb24` or `126155Z`, throw a
 `RangeError`. Other invalid values throw an `Error`.
 
 #### Format checks
 
 `isShortFormat`, `isShortenedFormat`, and `isLongFormat` check whether a string
-matches the structure of the corresponding format.
+matches the structure of the corresponding format. `isMDTGFormat` checks
+whether a string matches any of the three formats.
 
 ```js
-import { isShortFormat, isShortenedFormat, isLongFormat } from "mdtg";
+import {
+  isShortFormat,
+  isShortenedFormat,
+  isLongFormat,
+  isMDTGFormat,
+} from "mdtg";
 
 isShortFormat("121155Z");          // true
 isShortenedFormat("121155Zaug24"); // true
 isLongFormat("12115530Zaug24");    // true
+isMDTGFormat("121155Zaug24");      // true
+isMDTGFormat("invalid");           // false
 ```

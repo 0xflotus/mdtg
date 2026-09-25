@@ -14,6 +14,9 @@ export const isShortenedFormat = (value) =>
 export const isLongFormat = (value) =>
   typeof value === "string" && LONG_FORMAT_REGEX.test(value);
 
+export const isMDTGFormat = (value) =>
+  isShortFormat(value) || isShortenedFormat(value) || isLongFormat(value);
+
 export const validateDate = (date) => {
   if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
     throw new TypeError("Expected a valid Date object");
