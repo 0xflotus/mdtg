@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { parse } from "../../src/index.js";
+import { parseMDTG } from "../../src/index.js";
 
-describe("parse()", () => {
+describe("parseMDTG()", () => {
   afterEach(() => {
     vi.useRealTimers();
   });
@@ -12,12 +12,12 @@ describe("parse()", () => {
     ["12115530mAUG24", new Date(Date.UTC(2024, 7, 11, 22, 55, 30))],
     ["121155Zaug24", new Date(Date.UTC(2024, 7, 12, 11, 55))],
   ])("parses %s", (value, expected) => {
-    expect(parse(value)).toEqual(expected);
+    expect(parseMDTG(value)).toEqual(expected);
   });
 
   it("parses short form using the current month and year", () => {
     const now = new Date();
-    expect(parse("121155Z")).toEqual(
+    expect(parseMDTG("121155Z")).toEqual(
       new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 12, 11, 55)),
     );
   });
@@ -53,20 +53,20 @@ describe("parse()", () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date(Date.UTC(2024, 7, 12)));
 
-    expect(parse(value)).toEqual(expected);
+    expect(parseMDTG(value)).toEqual(expected);
   });
 
   it.each(["121155", "abcdefg", "12115530Zfoo24", "12115530!aug24", ""])(
     "rejects invalid input %s",
     (value) => {
-      expect(() => parse(value)).toThrow();
+      expect(() => parseMDTG(value)).toThrow();
     },
   );
 
   it.each(["290223Zfeb23", "310424Zapr24", "121560Z", "12115560Zfeb24"])(
     "rejects invalid calendar or time input %s",
     (value) => {
-      expect(() => parse(value)).toThrow(RangeError);
+      expect(() => parseMDTG(value)).toThrow(RangeError);
     },
   );
 });
