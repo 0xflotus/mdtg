@@ -1,10 +1,10 @@
 import { describe, test } from "vitest";
 import {
   formatMDTG,
-  isLongFormat,
+  isExtendedFormat,
   isMDTG,
-  isShortenedFormat,
   isShortFormat,
+  isStandardFormat,
   parseMDTG,
 } from "./src/index.js";
 
@@ -16,12 +16,12 @@ describe("MDTG benchmarks", () => {
       formatMDTG(date, { form: "short" });
     }).run();
 
-    await bench("formatMDTG - shortened", () => {
-      formatMDTG(date, { form: "shortened" });
+    await bench("formatMDTG - standard", () => {
+      formatMDTG(date, { form: "standard" });
     }).run();
 
-    await bench("formatMDTG - long", () => {
-      formatMDTG(date, { form: "long" });
+    await bench("formatMDTG - extended", () => {
+      formatMDTG(date, { form: "extended" });
     }).run();
   });
 
@@ -30,11 +30,11 @@ describe("MDTG benchmarks", () => {
       parseMDTG("121155Z");
     }).run();
 
-    await bench("parse - shortened", () => {
+    await bench("parse - standard", () => {
       parseMDTG("121155Zaug24");
     }).run();
 
-    await bench("parse - long", () => {
+    await bench("parse - extended", () => {
       parseMDTG("12115530Zaug24");
     }).run();
 
@@ -42,23 +42,23 @@ describe("MDTG benchmarks", () => {
       isShortFormat("121155Z");
     }).run();
 
-    await bench("isShortenedFormat", () => {
-      isShortenedFormat("121155Zaug24");
+    await bench("isStandardFormat", () => {
+      isStandardFormat("121155Zaug24");
     }).run();
 
-    await bench("isLongFormat", () => {
-      isLongFormat("12115530Zaug24");
+    await bench("isExtendedFormat", () => {
+      isExtendedFormat("12115530Zaug24");
     }).run();
 
     await bench("isMDTG - short", () => {
       isMDTG("121155Z");
     }).run();
 
-    await bench("isMDTG - shortened", () => {
+    await bench("isMDTG - standard", () => {
       isMDTG("121155Zaug24");
     }).run();
 
-    await bench("isMDTG - long", () => {
+    await bench("isMDTG - extended", () => {
       isMDTG("12115530Zaug24");
     }).run();
 

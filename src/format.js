@@ -1,8 +1,8 @@
 import { FORM, MONTHS, OFFSETS } from "./constants.js";
 import {
-  isLongFormat,
-  isShortenedFormat,
+  isExtendedFormat,
   isShortFormat,
+  isStandardFormat,
   validateDate,
   validateTimezone,
 } from "./validation.js";
@@ -25,7 +25,7 @@ const buildShort = (date, timezone) => {
   return result;
 };
 
-const buildLong = (date, timezone) => {
+const buildExtended = (date, timezone) => {
   const result = [
     date.getUTCDate(),
     date.getUTCHours(),
@@ -40,22 +40,22 @@ const buildLong = (date, timezone) => {
     )
     .join("");
 
-  if (!isLongFormat(result)) {
-    throw new Error("Failed to build long MDTG");
+  if (!isExtendedFormat(result)) {
+    throw new Error("Failed to build extended MDTG");
   }
 
   return result;
 };
 
-const buildShortened = (date, timezone) => {
+const buildStandard = (date, timezone) => {
   const result = [
     buildShort(date, timezone),
     MONTHS[date.getUTCMonth()],
     normalizeNumber(date.getUTCFullYear() % 100),
   ].join("");
 
-  if (!isShortenedFormat(result)) {
-    throw new Error("Failed to build shortened MDTG");
+  if (!isStandardFormat(result)) {
+    throw new Error("Failed to build standard MDTG");
   }
 
   return result;
@@ -63,7 +63,7 @@ const buildShortened = (date, timezone) => {
 
 export const formatMDTG = (
   date = new Date(),
-  { form = FORM.LONG, timezone: timezoneInput = "Z" } = {},
+  { form = FORM.EXTENDED, timezone: timezoneInput = "Z" } = {},
 ) => {
   validateDate(date);
 
@@ -73,9 +73,9 @@ export const formatMDTG = (
   switch (form) {
     case FORM.SHORT:
       return buildShort(adjustedDate, timezone);
-    case FORM.SHORTENED:
-      return buildShortened(adjustedDate, timezone);
+    case FORM.STANDARD:
+      return buildStandard(adjustedDate, timezone);
     default:
-      return buildLong(adjustedDate, timezone);
+      return buildExtended(adjustedDate, timezone);
   }
 };

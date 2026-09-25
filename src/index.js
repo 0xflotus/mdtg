@@ -1,8 +1,8 @@
 export { formatMDTG } from "./format.js";
 export { parseMDTG } from "./parse.js";
 export {
-  isLongFormat,
+  isExtendedFormat,
   isMDTG,
-  isShortenedFormat,
   isShortFormat,
+  isStandardFormat,
 } from "./validation.js";
