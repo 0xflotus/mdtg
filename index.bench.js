@@ -2,7 +2,7 @@ import { describe, test } from "vitest";
 import {
   formatMDTG,
   isLongFormat,
-  isMDTGFormat,
+  isMDTG,
   isShortenedFormat,
   isShortFormat,
   parseMDTG,
@@ -50,20 +50,20 @@ describe("MDTG benchmarks", () => {
       isLongFormat("12115530Zaug24");
     }).run();
 
-    await bench("isMDTGFormat - short", () => {
-      isMDTGFormat("121155Z");
+    await bench("isMDTG - short", () => {
+      isMDTG("121155Z");
     }).run();
 
-    await bench("isMDTGFormat - shortened", () => {
-      isMDTGFormat("121155Zaug24");
+    await bench("isMDTG - shortened", () => {
+      isMDTG("121155Zaug24");
     }).run();
 
-    await bench("isMDTGFormat - long", () => {
-      isMDTGFormat("12115530Zaug24");
+    await bench("isMDTG - long", () => {
+      isMDTG("12115530Zaug24");
     }).run();
 
-    await bench("isMDTGFormat - invalid", () => {
-      isMDTGFormat("invalid");
+    await bench("isMDTG - invalid", () => {
+      isMDTG("invalid");
     }).run();
   });
 });

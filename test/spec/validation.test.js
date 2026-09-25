@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   isLongFormat,
-  isMDTGFormat,
+  isMDTG,
   isShortenedFormat,
   isShortFormat,
 } from "../../src/index.js";
@@ -59,6 +59,6 @@ describe("MDTG format validation", () => {
     [[], false],
     [{}, false],
   ])("checks whether %s is an MDTG format", (value, expected) => {
-    expect(isMDTGFormat(value)).toBe(expected);
+    expect(isMDTG(value)).toBe(expected);
   });
 });
