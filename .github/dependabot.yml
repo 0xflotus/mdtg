@@ -20,7 +20,7 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-      time: "09:00"
+      time: "08:15"
       timezone: "Europe/Berlin"
     labels:
       - "github_actions"
