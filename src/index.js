@@ -3,7 +3,7 @@ export { formatMDTG } from "./format.js";
 export { parseMDTG } from "./parse.js";
 export {
   isLongFormat,
-  isMDTGFormat,
+  isMDTG,
   isShortenedFormat,
   isShortFormat,
 } from "./validation.js";

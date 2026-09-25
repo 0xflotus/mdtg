@@ -69,7 +69,7 @@ Invalid calendar dates and times, such as `310224Zfeb24` or `126155Z`, throw a
 #### Format checks
 
 `isShortFormat`, `isShortenedFormat`, and `isLongFormat` check whether a string
-matches the structure of the corresponding format. `isMDTGFormat` checks
+matches the structure of the corresponding format. `isMDTG` checks
 whether a string matches any of the three formats.
 
 ```js
@@ -77,12 +77,12 @@ import {
   isShortFormat,
   isShortenedFormat,
   isLongFormat,
-  isMDTGFormat,
+  isMDTG,
 } from "mdtg";
 
 isShortFormat("121155Z");          // true
 isShortenedFormat("121155Zaug24"); // true
 isLongFormat("12115530Zaug24");    // true
-isMDTGFormat("121155Zaug24");      // true
-isMDTGFormat("invalid");           // false
+isMDTG("121155Zaug24");      // true
+isMDTG("invalid");           // false
 ```

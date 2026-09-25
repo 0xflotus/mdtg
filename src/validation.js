@@ -14,7 +14,7 @@ export const isShortenedFormat = (value) =>
 export const isLongFormat = (value) =>
   typeof value === "string" && LONG_FORMAT_REGEX.test(value);
 
-export const isMDTGFormat = (value) =>
+export const isMDTG = (value) =>
   isShortFormat(value) || isShortenedFormat(value) || isLongFormat(value);
 
 export const validateDate = (date) => {
