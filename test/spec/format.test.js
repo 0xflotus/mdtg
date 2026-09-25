@@ -1,17 +1,17 @@
 import { describe, expect, it } from "vitest";
-import { FORM, formatMDTG } from "../../src/index.js";
+import { formatMDTG } from "../../src/index.js";
 
 describe("formatMDTG()", () => {
   const date = new Date(Date.UTC(2024, 7, 12, 11, 55, 30));
 
   it.each([
-    [{ form: FORM.SHORT }, "121155Z"],
-    [{ form: FORM.SHORTENED }, "121155Zaug24"],
-    [{ form: FORM.LONG }, "12115530Zaug24"],
+    [{ form: "short" }, "121155Z"],
+    [{ form: "shortened" }, "121155Zaug24"],
+    [{ form: "long" }, "12115530Zaug24"],
     [{}, "12115530Zaug24"],
     [{ timezone: "A" }, "12125530Aaug24"],
-    [{ form: FORM.SHORT, timezone: "Y" }, "112355Y"],
-    [{ form: FORM.SHORT, timezone: "y" }, "112355Y"],
+    [{ form: "short", timezone: "Y" }, "112355Y"],
+    [{ form: "short", timezone: "y" }, "112355Y"],
   ])("formats %o as %s", (options, expected) => {
     expect(formatMDTG(date, options)).toBe(expected);
   });
@@ -22,7 +22,7 @@ describe("formatMDTG()", () => {
       now.getUTCHours(),
     ).padStart(2, "0")}${String(now.getUTCMinutes()).padStart(2, "0")}Z`;
 
-    expect(formatMDTG(undefined, { form: FORM.SHORT })).toBe(expected);
+    expect(formatMDTG(undefined, { form: "short" })).toBe(expected);
   });
 
   it.each(["2024", 123, {}, new Date("invalid")])(
@@ -37,22 +37,22 @@ describe("date boundaries", () => {
   it.each([
     [
       new Date(Date.UTC(2001, 11, 31, 23, 59)),
-      { form: FORM.SHORTENED, timezone: "A" },
+      { form: "shortened", timezone: "A" },
       "010059Ajan02",
     ],
     [
       new Date(Date.UTC(2002, 0, 1)),
-      { form: FORM.SHORTENED, timezone: "Y" },
+      { form: "shortened", timezone: "Y" },
       "311200Ydec01",
     ],
     [
       new Date(Date.UTC(2024, 7, 31, 23, 30)),
-      { form: FORM.SHORTENED, timezone: "A" },
+      { form: "shortened", timezone: "A" },
       "010030Asep24",
     ],
     [
       new Date(Date.UTC(2024, 1, 29, 12)),
-      { form: FORM.SHORTENED },
+      { form: "shortened" },
       "291200Zfeb24",
     ],
   ])("formats %s correctly", (date, options, expected) => {
