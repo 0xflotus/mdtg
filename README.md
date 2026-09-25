@@ -11,12 +11,12 @@ npm install mdtg
 ### Usage
 
 ```js
-import { FORM, formatMDTG, parseMDTG } from "mdtg";
+import { formatMDTG, parseMDTG } from "mdtg";
 
 const date = new Date(Date.UTC(2024, 7, 12, 11, 55, 30));
 
-formatMDTG(date, { form: FORM.SHORT });      // "121155Z"
-formatMDTG(date, { form: FORM.SHORTENED });  // "121155Zaug24"
+formatMDTG(date, { form: "short" });      // "121155Z"
+formatMDTG(date, { form: "shortened" });  // "121155Zaug24"
 formatMDTG(date);                            // "12115530Zaug24" (long by default)
 
 // A is UTC+1, so local time is one hour ahead of UTC.
