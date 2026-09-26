@@ -22,6 +22,20 @@ describe("parseMDTG()", () => {
     );
   });
 
+  it("parses short form using an explicit reference date", () => {
+    expect(
+      parseMDTG("121155Z", {
+        referenceDate: new Date(Date.UTC(2024, 6, 1)),
+      }),
+    ).toEqual(new Date(Date.UTC(2024, 6, 12, 11, 55)));
+  });
+
+  it("validates the reference date for short form", () => {
+    expect(() =>
+      parseMDTG("121155Z", { referenceDate: new Date("invalid") }),
+    ).toThrow(TypeError);
+  });
+
   it.each([
     ["121355M", new Date(Date.UTC(2024, 7, 12, 0, 55))],
     ["121355L", new Date(Date.UTC(2024, 7, 12, 1, 55))],

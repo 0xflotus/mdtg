@@ -5,6 +5,7 @@ import {
   isMDTG,
   isShortFormat,
   isStandardFormat,
+  isValidMDTG,
   parseMDTG,
 } from "./src/index.js";
 
@@ -64,6 +65,14 @@ describe("MDTG benchmarks", () => {
 
     await bench("isMDTG - invalid", () => {
       isMDTG("invalid");
+    }).run();
+
+    await bench("isValidMDTG - valid", () => {
+      isValidMDTG("12115530Zaug24");
+    }).run();
+
+    await bench("isValidMDTG - invalid date", () => {
+      isValidMDTG("310224Zfeb24");
     }).run();
   });
 });

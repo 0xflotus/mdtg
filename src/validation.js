@@ -36,9 +36,9 @@ export const validateDateTime = ({
   minutes,
   seconds,
 }) => {
-  const candidate = new Date(
-    Date.UTC(year, month, day, hours, minutes, seconds ?? 0),
-  );
+  const candidate = new Date(0);
+  candidate.setUTCFullYear(year, month, day);
+  candidate.setUTCHours(hours, minutes, seconds ?? 0, 0);
 
   if (
     candidate.getUTCFullYear() !== year ||

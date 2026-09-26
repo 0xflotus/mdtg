@@ -1,0 +1,86 @@
+name: Quality
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  schedule:
+    - cron: "0 3 * * 0-3,5"
+      timezone: "Europe/Berlin"
+  workflow_dispatch:
+
+jobs:
+  quality:
+    name: Quality and package smoke test
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: "npm"
+      - run: npm ci
+      - name: Lint and format
+        run: npm run lint
+      - name: Test with coverage
+        run: npm run coverage
+      - name: Pack package
+        id: pack
+        run: echo "tarball=$(npm pack --silent --pack-destination "$RUNNER_TEMP")" >> "$GITHUB_OUTPUT"
+      - name: Install and verify packed package
+        run: |
+          npm install "$RUNNER_TEMP/${{ steps.pack.outputs.tarball }}" --prefix "$RUNNER_TEMP/mdtg-smoke"
+          cd "$RUNNER_TEMP/mdtg-smoke"
+          node --input-type=module -e '
+            import assert from "node:assert/strict";
+            import { formatMDTG, isValidMDTG, parseMDTG } from "mdtg";
+            const value = formatMDTG(new Date(Date.UTC(2024, 7, 12, 11, 55, 30)));
+            assert.equal(value, "12115530Zaug24");
+            assert.equal(parseMDTG(value).toISOString(), "2024-08-12T11:55:30.000Z");
+            assert.equal(isValidMDTG(value), true);
+          '
+
+  compatibility:
+    name: Compatibility (${{ matrix.os }}, Node ${{ matrix.node-version }})
+    needs: quality
+    timeout-minutes: 12
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            node-version: 26
+          - os: ubuntu-latest
+            node-version: 24
+          - os: macos-latest
+            node-version: 24
+          - os: windows-latest
+            node-version: 24
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - run: npm ci
+      - run: npm run test
+
+  bench:
+    name: Benchmarking
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event_name == 'pull_request'
+    needs: quality
+    timeout-minutes: 12
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: "npm"
+      - run: npm ci
+      - run: npm run bench
