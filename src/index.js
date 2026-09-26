@@ -1,5 +1,5 @@
 export { formatMDTG } from "./format.js";
-export { parseMDTG } from "./parse.js";
+export { isValidMDTG, parseMDTG } from "./parse.js";
 export {
   isExtendedFormat,
   isMDTG,

@@ -46,7 +46,7 @@ formatMDTG(new Date(Date.UTC(2024, 7, 12, 11, 55, 30)), {
 // "12125530Aaug24"
 ```
 
-#### `parseMDTG(value)`
+#### `parseMDTG(value, options)`
 
 Parses short (`121155Z`), standard (`121155Zaug24`), and extended
 (`12115530Zaug24`) formats into a `Date`. Short values use the current UTC
@@ -61,16 +61,24 @@ parseMDTG("12115530Zaug24").toISOString(); // "2024-08-12T11:55:30.000Z"
 parseMDTG("12125530Aaug24").toISOString(); // "2024-08-12T11:55:30.000Z"
 
 parseMDTG("121155Z"); // uses the current UTC month and year
+
+parseMDTG("121155Z", {
+  referenceDate: new Date(Date.UTC(2024, 7, 1)),
+}); // uses August 2024, independent of the system date
 ```
 
 Invalid calendar dates and times, such as `310224Zfeb24` or `126155Z`, throw a
 `RangeError`. Other invalid values throw an `Error`.
 
+`referenceDate` is an optional valid `Date` used only for short values that omit
+the month and year. If omitted, the current UTC month and year are used.
+
 #### Format checks
 
 `isShortFormat`, `isStandardFormat`, and `isExtendedFormat` check whether a string
-matches the structure of the corresponding format. `isMDTG` checks
-whether a string matches any of the three formats.
+matches the structure of the corresponding format. `isMDTG` checks whether a
+string matches any of the three structures. These checks do not validate
+calendar dates or times; use `isValidMDTG` when semantic validity is needed.
 
 ```js
 import {
@@ -78,6 +86,7 @@ import {
   isStandardFormat,
   isExtendedFormat,
   isMDTG,
+  isValidMDTG,
 } from "mdtg";
 
 isShortFormat("121155Z");          // true
@@ -85,4 +94,9 @@ isStandardFormat("121155Zaug24"); // true
 isExtendedFormat("12115530Zaug24"); // true
 isMDTG("121155Zaug24");      // true
 isMDTG("invalid");           // false
+isMDTG("310224Zfeb24");      // true: structurally valid
+isValidMDTG("310224Zfeb24"); // false: invalid calendar date
 ```
+
+For short values, `isValidMDTG` also accepts the same optional `referenceDate`
+as `parseMDTG`.

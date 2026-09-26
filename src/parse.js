@@ -1,37 +1,34 @@
 import { MONTHS, OFFSETS } from "./constants.js";
 import {
   isExtendedFormat,
+  isMDTG,
   isShortFormat,
   isStandardFormat,
+  validateDate,
   validateDateTime,
 } from "./validation.js";
 
 const parseInteger = (input) => Number.parseInt(input, 10);
 
-const parseShort = (value) => {
+const parseShort = (value, referenceDate) => {
   const day = parseInteger(value.slice(0, 2));
   const hours = parseInteger(value.slice(2, 4));
   const minutes = parseInteger(value.slice(4, 6));
   const timezone = value.slice(6, 7).toUpperCase();
-  const now = new Date();
+  validateDate(referenceDate);
 
   validateDateTime({
-    year: now.getUTCFullYear(),
-    month: now.getUTCMonth(),
+    year: referenceDate.getUTCFullYear(),
+    month: referenceDate.getUTCMonth(),
     day,
     hours,
     minutes,
   });
 
-  return new Date(
-    Date.UTC(
-      now.getUTCFullYear(),
-      now.getUTCMonth(),
-      day,
-      hours + OFFSETS[timezone],
-      minutes,
-    ),
-  );
+  const result = new Date(referenceDate);
+  result.setUTCDate(day);
+  result.setUTCHours(hours + OFFSETS[timezone], minutes, 0, 0);
+  return result;
 };
 
 const parseWithMonth = (value, { hasSeconds, timezoneIndex, monthStart }) => {
@@ -60,8 +57,8 @@ const parseWithMonth = (value, { hasSeconds, timezoneIndex, monthStart }) => {
   return new Date(Date.UTC(...dateParts));
 };
 
-export const parseMDTG = (value) => {
-  if (isShortFormat(value)) return parseShort(value);
+export const parseMDTG = (value, { referenceDate = new Date() } = {}) => {
+  if (isShortFormat(value)) return parseShort(value, referenceDate);
   if (isStandardFormat(value)) {
     return parseWithMonth(value, {
       hasSeconds: false,
@@ -78,4 +75,16 @@ export const parseMDTG = (value) => {
   }
 
   throw new Error(`Invalid MDTG string "${value}"`);
+};
+
+export const isValidMDTG = (value, options) => {
+  if (!isMDTG(value)) return false;
+
+  try {
+    parseMDTG(value, options);
+    return true;
+  } catch (error) {
+    if (error instanceof RangeError) return false;
+    throw error;
+  }
 };

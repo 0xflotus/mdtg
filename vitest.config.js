@@ -12,5 +12,14 @@ export default defineConfig({
     benchmark: {
       include: ["**/*.bench.js"],
     },
+    coverage: {
+      include: ["src/**/*.js"],
+      thresholds: {
+        lines: 90,
+        functions: 90,
+        branches: 80,
+        statements: 90,
+      },
+    },
   },
 });

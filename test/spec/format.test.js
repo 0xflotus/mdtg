@@ -10,6 +10,8 @@ describe("formatMDTG()", () => {
     [{ form: "extended" }, "12115530Zaug24"],
     [{}, "12115530Zaug24"],
     [{ timezone: "A" }, "12125530Aaug24"],
+    [{ timezone: "?" }, "12115530Zaug24"],
+    [{ form: "unknown" }, "12115530Zaug24"],
     [{ form: "short", timezone: "Y" }, "112355Y"],
     [{ form: "short", timezone: "y" }, "112355Y"],
   ])("formats %o as %s", (options, expected) => {
