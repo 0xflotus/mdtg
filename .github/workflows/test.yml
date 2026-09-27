@@ -6,10 +6,14 @@ on:
       - main
   pull_request:
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Assign PR"]
+    types: [completed]
 
 jobs:
   lint:
     name: Linting
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-slim
     timeout-minutes: 12
     steps:
