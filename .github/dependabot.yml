@@ -11,11 +11,19 @@ updates:
     open-pull-requests-limit: 5
     cooldown:
       default-days: 1
+    target-branch: "main"
     groups:
       vitest:
         patterns:
           - "vitest"
           - "@vitest/*"
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "09:03"
+      timezone: "Europe/Berlin"
+    target-branch: "develop"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
