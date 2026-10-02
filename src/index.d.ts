@@ -1,6 +1,8 @@
+type MDTGFormat = "short" | "extended" | "standard";
+
 declare function formatMDTG(
   date?: Date,
-  options?: { form?: "short" | "extended" | "standard"; timezone?: string },
+  options?: { form?: MDTGFormat; timezone?: string },
 ): string;
 
 declare function isValidMDTG(
@@ -16,6 +18,8 @@ declare function isExtendedFormat(mdtg: string): boolean;
 declare function isMDTG(mdtg: string): boolean;
 declare function isShortFormat(mdtg: string): boolean;
 declare function isStandardFormat(mdtg: string): boolean;
+
+export type { MDTGFormat };
 
 export {
   formatMDTG,
