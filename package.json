@@ -18,11 +18,12 @@
     "bench": "vitest bench --run",
     "coverage": "vitest run --coverage",
     "format": "biome check .",
+    "knip": "knip",
     "prelint": "npm run format && npm run prettier",
     "lint": "biome lint .",
-    "knip": "knip",
     "prettier": "prettier **/*.yml",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:mutation": "stryker run"
   },
   "keywords": [
     "military",
@@ -34,6 +35,8 @@
   "description": "This package offers you methods to convert Date Objects to military date time and vice versa",
   "devDependencies": {
     "@biomejs/biome": "2.5.15",
+    "@stryker-mutator/core": "10.0.0",
+    "@stryker-mutator/vitest-runner": "10.0.0",
     "@vitest/coverage-v8": "5.0.3",
     "knip": "6.39.0",
     "prettier": "3.9.9",
