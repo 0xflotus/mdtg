@@ -24,7 +24,7 @@ export const validateDate = (date) => {
 };
 
 export const validateTimezone = (timezone) => {
-  const key = timezone?.toUpperCase();
+  const key = typeof timezone === "string" ? timezone.toUpperCase() : "Z";
   return key in OFFSETS ? key : "Z";
 };
 

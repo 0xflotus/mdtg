@@ -37,6 +37,7 @@ describe("parseMDTG()", () => {
   });
 
   it.each([
+    ["121155z", new Date(Date.UTC(2024, 7, 12, 11, 55))],
     ["121355M", new Date(Date.UTC(2024, 7, 12, 0, 55))],
     ["121355L", new Date(Date.UTC(2024, 7, 12, 1, 55))],
     ["121355K", new Date(Date.UTC(2024, 7, 12, 2, 55))],
