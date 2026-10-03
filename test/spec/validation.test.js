@@ -10,6 +10,7 @@ import {
 describe("short format validation", () => {
   it.each([
     ["121155Z", isShortFormat, true],
+    ["121155z", isShortFormat, true],
     ["invalid", isShortFormat, false],
     ["121155Zaug24", isShortFormat, false],
     ["12115530Zaug24", isShortFormat, false],
@@ -52,6 +53,7 @@ describe("extended format validation", () => {
 describe("MDTG format validation", () => {
   it.each([
     ["121155Z", true],
+    ["121155z", true],
     ["121155Zaug24", true],
     ["12115530Zaug24", true],
     ["invalid", false],
@@ -67,6 +69,7 @@ describe("MDTG format validation", () => {
 describe("MDTG semantic validation", () => {
   it.each([
     ["121155Z", true],
+    ["121155z", true],
     ["121155Zaug24", true],
     ["12115530Zaug24", true],
     ["310224Zfeb24", false],
