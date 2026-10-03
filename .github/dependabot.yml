@@ -16,6 +16,9 @@ updates:
         patterns:
           - "vitest"
           - "@vitest/*"
+      stryker:
+        patterns:
+          - "@stryker-mutator/*"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
