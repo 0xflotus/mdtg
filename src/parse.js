@@ -37,9 +37,7 @@ const parseWithMonth = (value, { hasSeconds, timezoneIndex, monthStart }) => {
   const minutes = parseInteger(value.slice(4, 6));
   const seconds = hasSeconds ? parseInteger(value.slice(6, 8)) : undefined;
   const timezone = value.slice(timezoneIndex, timezoneIndex + 1).toUpperCase();
-  const month = MONTHS.indexOf(
-    value.slice(monthStart, monthStart + 3).toLowerCase(),
-  );
+  const month = MONTHS.indexOf(value.slice(monthStart, monthStart + 3).toLowerCase());
   const year = 2000 + parseInteger(value.slice(monthStart + 3, monthStart + 5));
 
   validateDateTime({

@@ -5,14 +5,8 @@ declare function formatMDTG(
   options?: { form?: MDTGFormat; timezone?: string },
 ): string;
 
-declare function isValidMDTG(
-  mdtg: string,
-  options?: { referenceDate?: Date },
-): boolean;
-declare function parseMDTG(
-  mdtg: string,
-  options?: { referenceDate?: Date },
-): Date;
+declare function isValidMDTG(mdtg: string, options?: { referenceDate?: Date }): boolean;
+declare function parseMDTG(mdtg: string, options?: { referenceDate?: Date }): Date;
 
 declare function isExtendedFormat(mdtg: string): boolean;
 declare function isMDTG(mdtg: string): boolean;
