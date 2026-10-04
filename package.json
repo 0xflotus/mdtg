@@ -37,11 +37,11 @@
   "description": "This package offers you methods to convert Date Objects to military date time group and vice versa",
   "devDependencies": {
     "@biomejs/biome": "2.5.15",
-    "@stryker-mutator/core": "10.0.0",
-    "@stryker-mutator/vitest-runner": "10.0.0",
-    "@vitest/coverage-v8": "^4.1.11",
+    "@systemfsoftware/stryker-js": "15.0.1",
+    "@systemfsoftware/stryker-js-vitest-runner": "8.0.3",
+    "@vitest/coverage-v8": "5.0.3",
     "knip": "6.39.0",
     "prettier": "3.9.9",
-    "vitest": "^4.1.11"
+    "vitest": "5.0.3"
   }
 }
