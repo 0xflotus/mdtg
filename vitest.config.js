@@ -1,5 +1,5 @@
 import { defineConfig } from "vitest/config";
-import AlphabeticalSequencer from "./test/alphabetical-sequencer";
+import AlphabeticalSequencer from "./test/alphabetical-sequencer.js";
 
 export default defineConfig({
   test: {
