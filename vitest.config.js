@@ -9,11 +9,15 @@ export default defineConfig({
     sequence: {
       sequencer: AlphabeticalSequencer,
     },
+    passWithNoTests: false,
+    reporters: ["default"],
+    hideSkippedTests: false,
     benchmark: {
       include: ["**/*.bench.js"],
     },
     coverage: {
       include: ["src/**/*.js"],
+      exclude: ["**/*.d.ts", "**/index.js", "**/test/**"],
       thresholds: {
         lines: 90,
         functions: 90,
