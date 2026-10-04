@@ -29,9 +29,7 @@ describe("parseMDTG()", () => {
     ["nov", 10],
     ["dec", 11],
   ])("parses month %s", (monthName, month) => {
-    expect(parseMDTG(`151234Z${monthName}24`)).toEqual(
-      new Date(Date.UTC(2024, month, 15, 12, 34)),
-    );
+    expect(parseMDTG(`151234Z${monthName}24`)).toEqual(new Date(Date.UTC(2024, month, 15, 12, 34)));
     expect(parseMDTG(`15123456Z${monthName}24`)).toEqual(
       new Date(Date.UTC(2024, month, 15, 12, 34, 56)),
     );
@@ -53,9 +51,7 @@ describe("parseMDTG()", () => {
   });
 
   it("validates the reference date for short form", () => {
-    expect(() =>
-      parseMDTG("121155Z", { referenceDate: new Date("invalid") }),
-    ).toThrow(TypeError);
+    expect(() => parseMDTG("121155Z", { referenceDate: new Date("invalid") })).toThrow(TypeError);
   });
 
   it.each([
@@ -103,15 +99,11 @@ describe("parseMDTG()", () => {
   it.each(["290223Zfeb23", "310424Zapr24", "121560Z", "12115560Zfeb24"])(
     "rejects invalid calendar or time input %s",
     (value) => {
-      expect(() => parseMDTG(value)).toThrow(
-        new RangeError("Invalid MDTG date or time"),
-      );
+      expect(() => parseMDTG(value)).toThrow(new RangeError("Invalid MDTG date or time"));
     },
   );
 
   it("includes invalid input in the parse error", () => {
-    expect(() => parseMDTG("invalid")).toThrow(
-      new Error('Invalid MDTG string "invalid"'),
-    );
+    expect(() => parseMDTG("invalid")).toThrow(new Error('Invalid MDTG string "invalid"'));
   });
 });

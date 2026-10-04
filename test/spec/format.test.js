@@ -30,14 +30,9 @@ describe("formatMDTG()", () => {
     expect(formatMDTG(undefined, { form: "short" })).toBe(expected);
   });
 
-  it.each(["2024", 123, {}, new Date("invalid")])(
-    "rejects %s as a date",
-    (invalidDate) => {
-      expect(() => formatMDTG(invalidDate)).toThrow(
-        new TypeError("Expected a valid Date object"),
-      );
-    },
-  );
+  it.each(["2024", 123, {}, new Date("invalid")])("rejects %s as a date", (invalidDate) => {
+    expect(() => formatMDTG(invalidDate)).toThrow(new TypeError("Expected a valid Date object"));
+  });
 
   it("formats every month name", () => {
     const months = [
@@ -66,21 +61,9 @@ describe("formatMDTG()", () => {
 
 describe("date boundaries", () => {
   it.each([
-    [
-      new Date(Date.UTC(2001, 11, 31, 23, 59)),
-      { form: "standard", timezone: "A" },
-      "010059Ajan02",
-    ],
-    [
-      new Date(Date.UTC(2002, 0, 1)),
-      { form: "standard", timezone: "Y" },
-      "311200Ydec01",
-    ],
-    [
-      new Date(Date.UTC(2024, 7, 31, 23, 30)),
-      { form: "standard", timezone: "A" },
-      "010030Asep24",
-    ],
+    [new Date(Date.UTC(2001, 11, 31, 23, 59)), { form: "standard", timezone: "A" }, "010059Ajan02"],
+    [new Date(Date.UTC(2002, 0, 1)), { form: "standard", timezone: "Y" }, "311200Ydec01"],
+    [new Date(Date.UTC(2024, 7, 31, 23, 30)), { form: "standard", timezone: "A" }, "010030Asep24"],
     [new Date(Date.UTC(2024, 1, 29, 12)), { form: "standard" }, "291200Zfeb24"],
   ])("formats %s correctly", (date, options, expected) => {
     expect(formatMDTG(date, options)).toBe(expected);

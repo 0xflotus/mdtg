@@ -94,12 +94,9 @@ describe("MDTG semantic validation", () => {
     ["310224Zfeb24", false],
     ["126155Z", false],
     ["invalid", false],
-  ])(
-    "checks whether %s is a valid military date-time group",
-    (value, expected) => {
-      expect(isValidMDTG(value)).toBe(expected);
-    },
-  );
+  ])("checks whether %s is a valid military date-time group", (value, expected) => {
+    expect(isValidMDTG(value)).toBe(expected);
+  });
 
   it("uses the explicit reference date for short form", () => {
     const options = { referenceDate: new Date(Date.UTC(2023, 1, 1)) };

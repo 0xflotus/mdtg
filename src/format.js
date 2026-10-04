@@ -9,8 +9,7 @@ import {
 
 const normalizeNumber = (number) => String(number).padStart(2, "0");
 
-const createDateWithOffset = (date, offset) =>
-  new Date(date.getTime() - offset * 60 * 60 * 1000);
+const createDateWithOffset = (date, offset) => new Date(date.getTime() - offset * 60 * 60 * 1000);
 
 const buildShort = (date, timezone) => {
   const result = [date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes()]
@@ -26,18 +25,9 @@ const buildShort = (date, timezone) => {
 };
 
 const buildExtended = (date, timezone) => {
-  const result = [
-    date.getUTCDate(),
-    date.getUTCHours(),
-    date.getUTCMinutes(),
-    date.getUTCSeconds(),
-  ]
+  const result = [date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds()]
     .map(normalizeNumber)
-    .concat(
-      timezone,
-      MONTHS[date.getUTCMonth()],
-      normalizeNumber(date.getUTCFullYear() % 100),
-    )
+    .concat(timezone, MONTHS[date.getUTCMonth()], normalizeNumber(date.getUTCFullYear() % 100))
     .join("");
 
   if (!isExtendedFormat(result)) {
