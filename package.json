@@ -28,11 +28,13 @@
   "keywords": [
     "military",
     "date",
+    "date time group",
+    "dtg",
     "time"
   ],
   "author": "0xflotus",
   "license": "MIT",
-  "description": "This package offers you methods to convert Date Objects to military date time and vice versa",
+  "description": "This package offers you methods to convert Date Objects to military date time group and vice versa",
   "devDependencies": {
     "@biomejs/biome": "2.5.15",
     "@stryker-mutator/core": "10.0.0",
