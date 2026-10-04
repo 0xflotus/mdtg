@@ -11,13 +11,6 @@ updates:
     open-pull-requests-limit: 5
     cooldown:
       default-days: 1
-    ignore:
-      - dependency-name: "@vitest/coverage-v8"
-        versions:
-          - ">=5.0.0"
-      - dependency-name: "vitest"
-        versions:
-          - ">=5.0.0"
     groups:
       vitest:
         patterns:
@@ -26,6 +19,7 @@ updates:
       stryker:
         patterns:
           - "@stryker-mutator/*"
+          - "@systemfsoftware/*"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
