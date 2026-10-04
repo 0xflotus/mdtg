@@ -11,6 +11,9 @@ describe("formatMDTG()", () => {
     [{}, "12115530Zaug24"],
     [{ timezone: "A" }, "12125530Aaug24"],
     [{ timezone: "?" }, "12115530Zaug24"],
+    [{ timezone: null }, "12115530Zaug24"],
+    [{ timezone: 0 }, "12115530Zaug24"],
+    [{ timezone: {} }, "12115530Zaug24"],
     [{ form: "unknown" }, "12115530Zaug24"],
     [{ form: "short", timezone: "Y" }, "112355Y"],
     [{ form: "short", timezone: "y" }, "112355Y"],
@@ -30,9 +33,35 @@ describe("formatMDTG()", () => {
   it.each(["2024", 123, {}, new Date("invalid")])(
     "rejects %s as a date",
     (invalidDate) => {
-      expect(() => formatMDTG(invalidDate)).toThrow(TypeError);
+      expect(() => formatMDTG(invalidDate)).toThrow(
+        new TypeError("Expected a valid Date object"),
+      );
     },
   );
+
+  it("formats every month name", () => {
+    const months = [
+      "jan",
+      "feb",
+      "mar",
+      "apr",
+      "may",
+      "jun",
+      "jul",
+      "aug",
+      "sep",
+      "oct",
+      "nov",
+      "dec",
+    ];
+
+    for (const [month, name] of months.entries()) {
+      const date = new Date(Date.UTC(2024, month, 15, 12, 34, 56));
+
+      expect(formatMDTG(date, { form: "standard" })).toBe(`151234Z${name}24`);
+      expect(formatMDTG(date, { form: "extended" })).toBe(`15123456Z${name}24`);
+    }
+  });
 });
 
 describe("date boundaries", () => {
