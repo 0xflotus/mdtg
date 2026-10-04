@@ -18,7 +18,6 @@ updates:
           - "@vitest/*"
       stryker:
         patterns:
-          - "@stryker-mutator/*"
           - "@systemfsoftware/*"
   - package-ecosystem: "github-actions"
     directory: "/"
