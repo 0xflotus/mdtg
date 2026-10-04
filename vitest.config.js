@@ -3,7 +3,7 @@ import AlphabeticalSequencer from "./test/alphabetical-sequencer.js";
 
 export default defineConfig({
   test: {
-    include: ["**/*.test.js"],
+    include: ["test/**/*.test.js"],
     fileParallelism: false,
     isolate: false,
     sequence: {

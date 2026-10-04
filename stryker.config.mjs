@@ -1,8 +1,5 @@
 export default {
-  testRunner: "command",
-  commandRunner: {
-    command: "npm test",
-  },
+  testRunner: "vitest",
   mutate: ["src/**/*.js"],
   reporters: ["html", "clear-text", "progress"],
   thresholds: {
@@ -10,5 +7,5 @@ export default {
     low: 60,
     break: 60,
   },
-  coverageAnalysis: "off",
+  coverageAnalysis: "perTest",
 };
