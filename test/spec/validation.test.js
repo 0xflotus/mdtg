@@ -12,6 +12,8 @@ describe("short format validation", () => {
     ["121155Z", isShortFormat, true],
     ["121155z", isShortFormat, true],
     ["invalid", isShortFormat, false],
+    ["x121155Z", isShortFormat, false],
+    ["121155Zx", isShortFormat, false],
     ["121155Zaug24", isShortFormat, false],
     ["12115530Zaug24", isShortFormat, false],
     [null, isShortFormat, false],
@@ -26,6 +28,8 @@ describe("standard format validation", () => {
   it.each([
     ["121155Zaug24", isStandardFormat, true],
     ["invalid", isStandardFormat, false],
+    ["x121155Zaug24", isStandardFormat, false],
+    ["121155Zaug24x", isStandardFormat, false],
     ["121155Z", isStandardFormat, false],
     ["12115530Zaug24", isStandardFormat, false],
     [null, isStandardFormat, false],
@@ -40,6 +44,8 @@ describe("extended format validation", () => {
   it.each([
     ["12115530Zaug24", isExtendedFormat, true],
     ["invalid", isExtendedFormat, false],
+    ["x12115530Zaug24", isExtendedFormat, false],
+    ["12115530Zaug24x", isExtendedFormat, false],
     ["121155Z", isExtendedFormat, false],
     ["121155Zaug24", isExtendedFormat, false],
     [null, isExtendedFormat, false],
@@ -63,6 +69,19 @@ describe("MDTG format validation", () => {
     [{}, false],
   ])("checks whether %s is an MDTG format", (value, expected) => {
     expect(isMDTG(value)).toBe(expected);
+  });
+
+  it.each([
+    [isShortFormat, "121155Z"],
+    [isStandardFormat, "121155Zaug24"],
+    [isExtendedFormat, "12115530Zaug24"],
+    [isMDTG, "121155Z"],
+    [isMDTG, "121155Zaug24"],
+    [isMDTG, "12115530Zaug24"],
+  ])("does not coerce non-string values", (validator, value) => {
+    const nonStringValue = { toString: () => value };
+
+    expect(validator(nonStringValue)).toBe(false);
   });
 });
 

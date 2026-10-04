@@ -1,5 +1,8 @@
 export default {
-  testRunner: "vitest",
+  testRunner: "command",
+  commandRunner: {
+    command: "npm test",
+  },
 
   mutate: ["src/**/*.js"],
 
@@ -8,8 +11,8 @@ export default {
   thresholds: {
     high: 80,
     low: 60,
-    break: 0,
+    break: 60,
   },
 
-  coverageAnalysis: "perTest",
+  coverageAnalysis: "off",
 };
