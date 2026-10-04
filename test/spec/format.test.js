@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { formatMDTG } from "../../src/index.js";
 
 describe("formatMDTG()", () => {
@@ -56,6 +56,36 @@ describe("formatMDTG()", () => {
       expect(formatMDTG(date, { form: "standard" })).toBe(`151234Z${name}24`);
       expect(formatMDTG(date, { form: "extended" })).toBe(`15123456Z${name}24`);
     }
+  });
+});
+
+describe("invalid MDTG formatting", () => {
+  const date = new Date(Date.UTC(2024, 7, 12, 11, 55, 30));
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it("rejects an invalid short MDTG built from the date", () => {
+    vi.spyOn(Date.prototype, "getUTCDate").mockReturnValue(100);
+
+    expect(() => formatMDTG(date, { form: "short" })).toThrow(
+      new Error("Failed to build short MDTG"),
+    );
+  });
+
+  it("rejects an invalid extended MDTG built from the date", () => {
+    vi.spyOn(Date.prototype, "getUTCSeconds").mockReturnValue(100);
+
+    expect(() => formatMDTG(date)).toThrow(new Error("Failed to build extended MDTG"));
+  });
+
+  it("rejects an invalid standard MDTG built from the date", () => {
+    vi.spyOn(Date.prototype, "getUTCMonth").mockReturnValue(12);
+
+    expect(() => formatMDTG(date, { form: "standard" })).toThrow(
+      new Error("Failed to build standard MDTG"),
+    );
   });
 });
 
