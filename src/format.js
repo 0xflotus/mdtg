@@ -51,10 +51,7 @@ const buildStandard = (date, timezone) => {
   return result;
 };
 
-export const formatMDTG = (
-  date = new Date(),
-  { form = FORM.EXTENDED, timezone: timezoneInput = "Z" } = {},
-) => {
+export const formatMDTG = (date = new Date(), { form, timezone: timezoneInput } = {}) => {
   validateDate(date);
 
   const timezone = validateTimezone(timezoneInput);

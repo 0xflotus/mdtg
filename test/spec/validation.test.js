@@ -6,6 +6,7 @@ import {
   isStandardFormat,
   isValidMDTG,
 } from "../../src/index.js";
+import { validateDateTime } from "../../src/validation.js";
 
 describe("short format validation", () => {
   it.each([
@@ -115,5 +116,27 @@ describe("MDTG semantic validation", () => {
         referenceDate: new Date("invalid"),
       }),
     ).toThrow(TypeError);
+  });
+});
+
+describe("date-time component validation", () => {
+  const validDateTime = {
+    year: 2024,
+    month: 7,
+    day: 12,
+    hours: 11,
+    minutes: 55,
+    seconds: 30,
+  };
+
+  it.each([
+    [{ year: 2024.5 }],
+    [{ month: 7.5 }],
+    [{ day: 12.5 }],
+    [{ hours: 11.5 }],
+    [{ minutes: 55.5 }],
+    [{ seconds: 30.5 }],
+  ])("rejects a non-integer %s", (invalidComponent) => {
+    expect(() => validateDateTime({ ...validDateTime, ...invalidComponent })).toThrow(RangeError);
   });
 });

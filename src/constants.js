@@ -51,5 +51,4 @@ export const EXTENDED_FORMAT_REGEX =
 export const FORM = Object.freeze({
   SHORT: "short",
   STANDARD: "standard",
-  EXTENDED: "extended",
 });
