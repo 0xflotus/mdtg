@@ -1,8 +1,5 @@
 export default {
-  testRunner: "command",
-  commandRunner: {
-    command: "npm test",
-  },
+  testRunner: "vitest",
   mutate: ["src/**/*.js", "!src/**/index.js"],
   reporters: ["html", "clear-text", "progress"],
   thresholds: {
