@@ -6,9 +6,9 @@ export default {
   mutate: ["src/**/*.js", "!src/**/index.js"],
   reporters: ["html", "clear-text", "progress"],
   thresholds: {
-    high: 80,
-    low: 60,
-    break: 60,
+    high: 90,
+    low: 80,
+    break: 80,
   },
   coverageAnalysis: "perTest",
 };
