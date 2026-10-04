@@ -1,20 +1,14 @@
-name: Mutation Testing
+name: Test Coverage
 
 on:
+  workflow_dispatch: 
   pull_request:
-  push:
     branches:
       - main
-  workflow_dispatch: 
-
-permissions:
-  contents: read
 
 jobs:
-  mutation-testing:
-    name: Mutation Testing
+  coverage:
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -25,12 +19,11 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
-      - name: Run mutation tests
-        run: npm run test:mutation
-      - name: Upload mutation report
-        if: always()
+      - name: Run Vitest with coverage
+        run: npx vitest run --coverage --coverage.provider=v8 --coverage.reporter=text --coverage.reporter=html --coverage.reporter=lcov
+      - name: Upload coverage report
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: mutation-report
-          path: reports/mutation/
-          if-no-files-found: ignore
+          name: coverage-report
+          path: coverage/
+          if-no-files-found: error
