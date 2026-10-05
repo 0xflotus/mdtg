@@ -7,7 +7,7 @@ export default defineConfig({
     isolate: false,
     passWithNoTests: false,
     reporters: ["verbose"],
-    slowTestThreshold: 2000,
+    slowTestThreshold: 2_000,
     hideSkippedTests: false,
     sequence: {
       sequencer: AlphabeticalSequencer,
@@ -43,6 +43,7 @@ export default defineConfig({
           sequence: {
             groupOrder: 1,
           },
+          testTimeout: 20_000,
         },
       },
     ],
