@@ -1,0 +1,84 @@
+name: Monitor workflow failures
+
+on:
+  workflow_run:
+    workflows:
+      - Assign PR and Reviewer
+      - npm Audit
+      - CodeQL
+      - Comment on approval
+      - Test Coverage
+      - Integration Tests
+      - Knip
+      - Mutation Testing
+      - Quality
+      - Close inactive issues and pr
+      - Test
+    types:
+      - completed
+
+permissions:
+  actions: read
+  issues: write
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Debug workflow result
+        run: |
+          echo "Workflow: ${{ github.event.workflow_run.name }}"
+          echo "Conclusion: ${{ github.event.workflow_run.conclusion }}"
+          echo "Run: ${{ github.event.workflow_run.html_url }}"
+
+      - name: Create issue on failure
+        if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const run = context.payload.workflow_run;
+            const workflowName = run.name;
+
+            const title = `❌ Workflow failed: ${workflowName}`;
+
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'workflow-failure',
+              per_page: 100
+            });
+
+            const existingIssue = issues.find(
+              issue => issue.title === title
+            );
+
+            const body = [
+              `## Workflow failed`,
+              ``,
+              `**Workflow:** ${workflowName}`,
+              `**Run:** #${run.run_number}`,
+              `**Branch:** \`${run.head_branch}\``,
+              `**Commit:** \`${run.head_sha}\``,
+              `**Actor:** @${run.actor.login}`,
+              ``,
+              `[View workflow run](${run.html_url})`
+            ].join('\n');
+
+            if (existingIssue) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existingIssue.number,
+                body: `### ❌ Workflow failed again\n\n${body}`
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                body,
+                labels: ['workflow-failure']
+              });
+            }
