@@ -3,15 +3,15 @@ import AlphabeticalSequencer from "./test/alphabetical-sequencer.js";
 
 export default defineConfig({
   test: {
-    include: ["test/**/*.test.js"],
     fileParallelism: false,
     isolate: false,
+    passWithNoTests: false,
+    reporters: ["verbose"],
+    slowTestThreshold: 2000,
+    hideSkippedTests: false,
     sequence: {
       sequencer: AlphabeticalSequencer,
     },
-    passWithNoTests: false,
-    reporters: ["default"],
-    hideSkippedTests: false,
     benchmark: {
       include: ["**/*.bench.js"],
     },
@@ -25,5 +25,26 @@ export default defineConfig({
         statements: 90,
       },
     },
+    projects: [
+      {
+        test: {
+          name: "tests",
+          include: ["test/**/*.test.js"],
+          exclude: ["test/property.test.js"],
+          sequence: {
+            groupOrder: 0,
+          },
+        },
+      },
+      {
+        test: {
+          name: "property",
+          include: ["test/property.test.js"],
+          sequence: {
+            groupOrder: 1,
+          },
+        },
+      },
+    ],
   },
 });
