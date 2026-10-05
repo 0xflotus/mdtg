@@ -15,16 +15,16 @@ import { formatMDTG, parseMDTG } from "mdtg";
 
 const date = new Date(Date.UTC(2024, 7, 12, 11, 55, 30));
 
-formatMDTG(date, { form: "short" });      // "121155Z"
-formatMDTG(date, { form: "standard" });   // "121155Zaug24"
-formatMDTG(date);                         // "12115530Zaug24" (extended by default)
+formatMDTG(date, { form: "short" }); // "121155Z"
+formatMDTG(date, { form: "standard" }); // "121155Zaug24"
+formatMDTG(date); // "12115530Zaug24" (extended by default)
 
 // A is UTC+1, so local time is one hour ahead of UTC.
 const value = formatMDTG(date, { timezone: "A" }); // "12125530Aaug24"
-parseMDTG(value).toISOString();                       // "2024-08-12T11:55:30.000Z"
+parseMDTG(value).toISOString(); // "2024-08-12T11:55:30.000Z"
 
 parseMDTG("121155Zaug24").toISOString(); // "2024-08-12T11:55:00.000Z"
-parseMDTG("121155Z");                    // month and year are current UTC month/year
+parseMDTG("121155Z"); // month and year are current UTC month/year
 ```
 
 ### API
@@ -56,7 +56,7 @@ month and year and have no seconds. Years are interpreted as `2000` through
 ```js
 import { parseMDTG } from "mdtg";
 
-parseMDTG("121155Zaug24").toISOString();   // "2024-08-12T11:55:00.000Z"
+parseMDTG("121155Zaug24").toISOString(); // "2024-08-12T11:55:00.000Z"
 parseMDTG("12115530Zaug24").toISOString(); // "2024-08-12T11:55:30.000Z"
 parseMDTG("12125530Aaug24").toISOString(); // "2024-08-12T11:55:30.000Z"
 
@@ -89,12 +89,12 @@ import {
   isValidMDTG,
 } from "mdtg";
 
-isShortFormat("121155Z");          // true
+isShortFormat("121155Z"); // true
 isStandardFormat("121155Zaug24"); // true
 isExtendedFormat("12115530Zaug24"); // true
-isMDTG("121155Zaug24");      // true
-isMDTG("invalid");           // false
-isMDTG("310224Zfeb24");      // true: structurally valid
+isMDTG("121155Zaug24"); // true
+isMDTG("invalid"); // false
+isMDTG("310224Zfeb24"); // true: structurally valid
 isValidMDTG("310224Zfeb24"); // false: invalid calendar date
 ```
 

@@ -23,6 +23,7 @@
     "lint": "biome lint .",
     "prettier": "prettier **/*.yml",
     "test": "vitest run",
+    "test:integration": "vitest run test/integration",
     "test:mutation": "stryker run"
   },
   "keywords": [
