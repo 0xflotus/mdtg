@@ -3,16 +3,13 @@ name: Monitor workflow failures
 on:
   workflow_run:
     workflows:
-      - Assign PR and Reviewer
       - npm Audit
       - CodeQL
-      - Comment on approval
       - Test Coverage
       - Integration Tests
       - Knip
       - Mutation Testing
       - Quality
-      - Close inactive issues and pr
       - Test
     types:
       - completed
