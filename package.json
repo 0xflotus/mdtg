@@ -23,6 +23,7 @@
     "lint": "biome lint .",
     "prettier": "prettier **/*.yml",
     "test": "vitest run",
+    "test:gherkin": "cucumber-js test/features",
     "test:integration": "vitest run test/integration",
     "test:mutation": "stryker run"
   },
@@ -40,6 +41,7 @@
     "@biomejs/biome": "2.5.15",
     "@systemfsoftware/stryker-js": "17.0.1",
     "@systemfsoftware/stryker-js-vitest-runner": "8.1.1",
+    "@cucumber/cucumber": "13.3.0",
     "@vitest/coverage-v8": "5.0.3",
     "fast-check": "4.10.2",
     "knip": "6.40.0",
