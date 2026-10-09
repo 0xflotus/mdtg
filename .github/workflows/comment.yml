@@ -2,12 +2,13 @@ name: Comment on approval
 
 on:
   pull_request_review:
-    types: [submitted]
+    types:
+      - submitted
 
 jobs:
   comment:
     if: github.event.review.state == 'approved'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     permissions:
       pull-requests: write
     steps:
