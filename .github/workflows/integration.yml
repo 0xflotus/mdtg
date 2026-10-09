@@ -30,4 +30,4 @@ jobs:
           mkdir -p "$RUNNER_TEMP/mdtg-integration/test"
           cp -R test/integration "$RUNNER_TEMP/mdtg-integration/test/integration"
       - name: Run integration tests against packed package
-        run: npx vitest run --root "$RUNNER_TEMP/mdtg-integration" --config "$GITHUB_WORKSPACE/vitest.config.js" test/integration
+        run: npx vitest run --root "$RUNNER_TEMP/mdtg-integration" --config "$GITHUB_WORKSPACE/vitest.config.js" --project integration
