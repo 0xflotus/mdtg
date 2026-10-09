@@ -1,6 +1,5 @@
 {
   "$schema": "https://unpkg.com/knip@6.39.0/schema.json",
   "entry": ["src/**/*.js", "stryker.config.mjs"],
-  "ignore": ["test/features/step_definitions/**/*.js"],
   "ignoreDependencies": ["@systemfsoftware/stryker-js-vitest-runner"]
 }
