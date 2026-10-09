@@ -28,11 +28,28 @@ export default defineConfig({
     projects: [
       {
         test: {
-          name: "tests",
-          include: ["test/**/*.test.js"],
-          exclude: ["test/property.test.js"],
+          name: "unit",
+          include: ["test/spec/**/*.test.js"],
           sequence: {
             groupOrder: 0,
+          },
+        },
+      },
+      {
+        test: {
+          name: "integration",
+          include: ["test/integration/**/*.test.js"],
+          sequence: {
+            groupOrder: 1,
+          },
+        },
+      },
+      {
+        test: {
+          name: "behavior",
+          include: ["test/features/**/*.test.js"],
+          sequence: {
+            groupOrder: 2,
           },
         },
       },
@@ -41,7 +58,7 @@ export default defineConfig({
           name: "property",
           include: ["test/property.test.js"],
           sequence: {
-            groupOrder: 1,
+            groupOrder: 3,
           },
           testTimeout: 20_000,
         },

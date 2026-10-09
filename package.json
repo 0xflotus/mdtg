@@ -23,8 +23,10 @@
     "lint": "biome lint .",
     "prettier": "prettier **/*.yml",
     "test": "vitest run",
-    "test:gherkin": "vitest run test/features",
-    "test:integration": "vitest run test/integration",
+    "test:unit": "vitest run --project unit",
+    "test:property": "vitest run --project property",
+    "test:integration": "vitest run --project integration",
+    "test:gherkin": "vitest run --project behavior",
     "test:mutation": "stryker run"
   },
   "keywords": [
