@@ -2,14 +2,15 @@ name: Assign PR and Reviewer
 
 on:
   pull_request:
-    types: [opened]
+    types:
+      - opened
 
 permissions:
   pull-requests: write
 
 jobs:
   assign:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     steps:
       - name: Assign PR and Reviewer
         env:

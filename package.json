@@ -19,7 +19,6 @@
     "coverage": "vitest run --coverage",
     "format": "biome check .",
     "knip": "knip",
-    "prelint": "npm run format && npm run prettier",
     "lint": "biome lint .",
     "prettier": "prettier **/*.yml",
     "test": "vitest run",
