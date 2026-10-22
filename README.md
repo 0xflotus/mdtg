@@ -81,13 +81,7 @@ string matches any of the three structures. These checks do not validate
 calendar dates or times; use `isValidMDTG` when semantic validity is needed.
 
 ```js
-import {
-  isShortFormat,
-  isStandardFormat,
-  isExtendedFormat,
-  isMDTG,
-  isValidMDTG,
-} from "mdtg";
+import { isShortFormat, isStandardFormat, isExtendedFormat, isMDTG, isValidMDTG } from "mdtg";
 
 isShortFormat("121155Z"); // true
 isStandardFormat("121155Zaug24"); // true
