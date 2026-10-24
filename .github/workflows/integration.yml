@@ -19,7 +19,7 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: "npm"
-      - run: npm ci
+      - run: npm clean-install
       - name: Pack package
         id: pack
         run: echo "tarball=$(npm pack --silent --pack-destination "$RUNNER_TEMP")" >> "$GITHUB_OUTPUT"
