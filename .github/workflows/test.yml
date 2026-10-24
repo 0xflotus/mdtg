@@ -19,7 +19,7 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: "npm"
-      - run: npm ci
+      - run: npm clean-install
       - name: Check format
         run: npm run format && npm run prettier
   lint:
@@ -34,7 +34,7 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: "npm"
-      - run: npm ci
+      - run: npm clean-install
       - name: Lint
         run: npm run lint
   test:
@@ -68,5 +68,5 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-      - run: npm ci
+      - run: npm clean-install
       - run: npm run test
