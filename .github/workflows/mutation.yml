@@ -24,7 +24,7 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - name: Install dependencies
-        run: npm ci
+        run: npm clean-install
       - name: Run mutation tests
         run: npm run test:mutation -- --reporters clear-text,html
       - name: Upload mutation report
