@@ -40,7 +40,7 @@
   "description": "This package offers you methods to convert Date Objects to military date time group and vice versa",
   "devDependencies": {
     "@amiceli/vitest-cucumber": "8.0.0",
-    "@biomejs/biome": "2.6.2",
+    "@biomejs/biome": "2.6.3",
     "@systemfsoftware/stryker-js": "17.0.2",
     "@systemfsoftware/stryker-js-vitest-runner": "8.1.1",
     "@vitest/coverage-v8": "5.0.5",
