@@ -45,7 +45,7 @@
     "@systemfsoftware/stryker-js-vitest-runner": "8.1.1",
     "@vitest/coverage-v8": "5.0.5",
     "fast-check": "4.10.2",
-    "knip": "6.42.1",
+    "knip": "6.43.0",
     "prettier": "3.9.10",
     "vitest": "5.0.5"
   }
