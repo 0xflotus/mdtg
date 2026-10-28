@@ -1,0 +1,87 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Tests: all",
+      "type": "npm",
+      "script": "test",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Tests: Unit",
+      "type": "npm",
+      "script": "test:unit",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Tests: Property",
+      "type": "npm",
+      "script": "test:property",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Tests: Integration",
+      "type": "npm",
+      "script": "test:integration",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Tests: Gherkin",
+      "type": "npm",
+      "script": "test:gherkin",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Tests: Mutation",
+      "type": "npm",
+      "script": "test:mutation",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Coverage",
+      "type": "npm",
+      "script": "coverage",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Lint",
+      "type": "npm",
+      "script": "lint",
+      "problemMatcher": []
+    },
+    {
+      "label": "Format",
+      "type": "npm",
+      "script": "format",
+      "problemMatcher": []
+    },
+    {
+      "label": "Prettier: YAML",
+      "type": "npm",
+      "script": "prettier",
+      "problemMatcher": []
+    },
+    {
+      "label": "Benchmark",
+      "type": "npm",
+      "script": "bench",
+      "problemMatcher": []
+    },
+    {
+      "label": "Knip",
+      "type": "npm",
+      "script": "knip",
+      "problemMatcher": []
+    }
+  ]
+}
