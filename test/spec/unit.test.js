@@ -23,19 +23,13 @@ describe("parseMDTG", () => {
   });
 
   it("interprets two-digit years as years from 2000 to 2099", () => {
-    expect(parseMDTG("010000ZJan00").toISOString()).toBe(
-      "2000-01-01T00:00:00.000Z",
-    );
-    expect(parseMDTG("010000ZJan99").toISOString()).toBe(
-      "2099-01-01T00:00:00.000Z",
-    );
+    expect(parseMDTG("010000ZJan00").toISOString()).toBe("2000-01-01T00:00:00.000Z");
+    expect(parseMDTG("010000ZJan99").toISOString()).toBe("2099-01-01T00:00:00.000Z");
   });
 
   it("applies the offset for the specified timezone", () => {
     // Alpha is UTC+1, so 12:30 local time is 11:30 UTC.
-    expect(parseMDTG("151230AMay24").toISOString()).toBe(
-      "2024-05-15T11:30:00.000Z",
-    );
+    expect(parseMDTG("151230AMay24").toISOString()).toBe("2024-05-15T11:30:00.000Z");
   });
 
   it.each([
@@ -43,15 +37,13 @@ describe("parseMDTG", () => {
     "012460ZMay24", // Invalid minute
     "012400ZMay24", // Invalid hour
     "010000ZFoo24", // Unknown month
-    "010000ZJan",   // Incomplete input
+    "010000ZJan", // Incomplete input
   ])("rejects invalid DTG input: %s", (value) => {
     expect(() => parseMDTG(value)).toThrow();
   });
 
   it("handles February 29 correctly in leap and non-leap years", () => {
-    expect(parseMDTG("290000ZFeb24").toISOString()).toBe(
-      "2024-02-29T00:00:00.000Z",
-    );
+    expect(parseMDTG("290000ZFeb24").toISOString()).toBe("2024-02-29T00:00:00.000Z");
 
     expect(() => parseMDTG("290000ZFeb23")).toThrow();
   });
@@ -65,9 +57,7 @@ describe("formatMDTG", () => {
   });
 
   it("formats the standard form", () => {
-    expect(formatMDTG(date, { form: "standard", timezone: "Z" })).toBe(
-      "151230ZMay24",
-    );
+    expect(formatMDTG(date, { form: "standard", timezone: "Z" })).toBe("151230ZMay24");
   });
 
   it("defaults to the extended form", () => {
