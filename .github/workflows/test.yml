@@ -56,6 +56,7 @@ jobs:
             macos-26,
             macos-26-intel,
             windows-11-arm,
+            windows-2022,
             windows-2025,
             windows-latest,
           ]
