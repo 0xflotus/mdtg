@@ -57,15 +57,12 @@ describe("formatMDTG", () => {
   });
 
   it("formats the standard form", () => {
-  expect(formatMDTG(date, { form: "standard", timezone: "Z" })).toBe(
-    "151230Zmay24",
-  );
-});
+    expect(formatMDTG(date, { form: "standard", timezone: "Z" })).toBe("151230Zmay24");
+  });
 
-it("defaults to the extended form", () => {
-  expect(formatMDTG(date, { timezone: "Z" })).toBe("15123045Zmay24");
-});
-
+  it("defaults to the extended form", () => {
+    expect(formatMDTG(date, { timezone: "Z" })).toBe("15123045Zmay24");
+  });
 
   it("formats the time for the specified timezone", () => {
     // Alpha is UTC+1, so the local DTG time is one hour later.
