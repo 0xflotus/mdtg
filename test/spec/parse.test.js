@@ -117,8 +117,8 @@ describe.skipIf(!globalThis.Temporal)("parseMDTG() - native Temporal API", () =>
   ])("parses %s as Temporal.Instant", (value, expected) => {
     const result = parseMDTG(value);
 
-    expect(
-      Temporal.Instant.fromEpochMilliseconds(result.getTime()),
-    ).toEqual(Temporal.Instant.from(expected));
+    expect(Temporal.Instant.fromEpochMilliseconds(result.getTime())).toEqual(
+      Temporal.Instant.from(expected),
+    );
   });
 });
