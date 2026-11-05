@@ -107,3 +107,18 @@ describe("parseMDTG()", () => {
     expect(() => parseMDTG("invalid")).toThrow(new Error('Invalid MDTG string "invalid"'));
   });
 });
+
+describe.skipIf(!globalThis.Temporal)("parseMDTG() - native Temporal API", () => {
+  it.each([
+    ["12115530Zaug24", "2024-08-12T11:55:30Z"],
+    ["12115530Aaug24", "2024-08-12T10:55:30Z"],
+    ["12115530mAUG24", "2024-08-11T22:55:30Z"],
+    ["121155Zaug24", "2024-08-12T11:55:00Z"],
+  ])("parses %s as Temporal.Instant", (value, expected) => {
+    const result = parseMDTG(value);
+
+    expect(Temporal.Instant.fromEpochMilliseconds(result.getTime())).toEqual(
+      Temporal.Instant.from(expected),
+    );
+  });
+});
