@@ -13,6 +13,27 @@ Feature: MDTG conversion
     When I parse the MDTG value
     Then the UTC date should be "2024-08-12T11:55:00.000Z"
 
+  Scenario: Format and parse a Temporal PlainDate
+    Given I have the Temporal PlainDate "2024-08-12"
+    When I format the Temporal value as an extended MDTG
+    Then the MDTG value should be "12000000Zaug24"
+    When I parse the MDTG value as a Temporal PlainDate
+    Then the Temporal value should be "2024-08-12"
+
+  Scenario: Format and parse a Temporal PlainDateTime
+    Given I have the Temporal PlainDateTime "2024-08-12T11:55:30"
+    When I format the Temporal value as an extended MDTG in timezone "A"
+    Then the MDTG value should be "12115530Aaug24"
+    When I parse the MDTG value as a Temporal PlainDateTime
+    Then the Temporal value should be "2024-08-12T11:55:30"
+
+  Scenario: Format and parse a Temporal ZonedDateTime
+    Given I have the Temporal ZonedDateTime "2024-08-12T11:55:30+01:00[+01:00]"
+    When I format the Temporal value as an extended MDTG
+    Then the MDTG value should be "12115530Aaug24"
+    When I parse the MDTG value as a Temporal ZonedDateTime
+    Then the Temporal value should be "2024-08-12T11:55:30+01:00[+01:00]"
+
   Scenario: Reject an invalid calendar date
     Given I have the MDTG value "310224Zfeb24"
     When I parse the MDTG value
