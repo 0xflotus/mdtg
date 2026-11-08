@@ -1,6 +1,6 @@
 {
   "name": "mdtg",
-  "version": "4.2.2",
+  "version": "5.0.0",
   "main": "src/index.js",
   "types": "src/index.d.ts",
   "type": "module",
