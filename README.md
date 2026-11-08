@@ -73,6 +73,47 @@ Invalid calendar dates and times, such as `310224Zfeb24` or `126155Z`, throw a
 `referenceDate` is an optional valid `Date` used only for short values that omit
 the month and year. If omitted, the current UTC month and year are used.
 
+#### Temporal API
+
+`formatTemporalMDTG` and `parseTemporalMDTG` provide a separate API for the
+native Temporal objects. They require a runtime with `globalThis.Temporal`
+(available by default in Node.js 26 and newer); the existing `Date` API remains
+available on older runtimes. Calling either Temporal function when Temporal is
+unavailable throws an `Error`.
+
+`formatTemporalMDTG` accepts `Temporal.PlainDate`, `Temporal.PlainDateTime`, or
+`Temporal.ZonedDateTime`. A `PlainDate` is formatted at midnight UTC. A
+`PlainDateTime` uses the `timezone` option (a NATO letter, defaulting to `Z`)
+for its wall-clock time. A `ZonedDateTime` uses its own wall-clock time and
+offset; the offset must be a whole number of hours supported by an MDTG
+timezone letter.
+
+```js
+import { formatTemporalMDTG, parseTemporalMDTG } from "mdtg";
+
+formatTemporalMDTG(Temporal.PlainDate.from("2024-08-12"));
+// "12000000Zaug24"
+
+formatTemporalMDTG(Temporal.PlainDateTime.from("2024-08-12T11:55:30"), {
+  timezone: "A",
+});
+// "12115530Aaug24"
+
+parseTemporalMDTG("121155Aaug24", { type: "zonedDateTime" }).toString();
+// "2024-08-12T11:55:00+01:00[+01:00]"
+
+parseTemporalMDTG("121155Zaug24", { type: "plainDate" }).toString();
+// "2024-08-12"
+```
+
+Parsing requires `type`: `"plainDate"`, `"plainDateTime"`, or
+`"zonedDateTime"`. The returned `PlainDate` discards the MDTG time and zone;
+`PlainDateTime` retains the wall-clock date/time but discards the zone. A
+`ZonedDateTime` uses the fixed offset represented by the MDTG timezone letter.
+For short values, `referenceDate` can be a `Temporal.PlainDate`; if omitted,
+the current UTC month and year are used. Temporal-specific tests are skipped
+when the runtime does not provide `globalThis.Temporal`.
+
 #### Format checks
 
 `isShortFormat`, `isStandardFormat`, and `isExtendedFormat` check whether a string

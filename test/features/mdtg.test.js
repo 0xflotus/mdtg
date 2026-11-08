@@ -1,7 +1,14 @@
 import { fileURLToPath } from "node:url";
 import { describeFeature, loadFeature } from "@amiceli/vitest-cucumber";
 import { expect } from "vitest";
-import { formatMDTG, isMDTG, isValidMDTG, parseMDTG } from "../../src/index.js";
+import {
+  formatMDTG,
+  formatTemporalMDTG,
+  isMDTG,
+  isValidMDTG,
+  parseMDTG,
+  parseTemporalMDTG,
+} from "../../src/index.js";
 
 const feature = await loadFeature(fileURLToPath(new URL("./mdtg.feature", import.meta.url)));
 
@@ -27,7 +34,27 @@ function parseValue(context) {
   };
 }
 
+function setTemporalValue(context, type, value) {
+  return () => {
+    context.temporalValue = Temporal[type].from(value);
+  };
+}
+
+function formatTemporalValue(context, options) {
+  return () => {
+    context.value = formatTemporalMDTG(context.temporalValue, options);
+  };
+}
+
+function parseTemporalValue(context, type) {
+  return () => {
+    context.temporalValue = parseTemporalMDTG(context.value, { type });
+  };
+}
+
 describeFeature(feature, ({ Scenario, ScenarioOutline }) => {
+  const TemporalScenario = globalThis.Temporal ? Scenario : Scenario.skip;
+
   Scenario("Format an extended MDTG in UTC", ({ Given, When, Then }) => {
     const context = {};
 
@@ -59,6 +86,70 @@ describeFeature(feature, ({ Scenario, ScenarioOutline }) => {
     When("I parse the MDTG value", parseValue(context));
     Then('the UTC date should be "2024-08-12T11:55:00.000Z"', () => {
       expect(context.date.toISOString()).toBe("2024-08-12T11:55:00.000Z");
+    });
+  });
+
+  TemporalScenario("Format and parse a Temporal PlainDate", ({ Given, When, Then }) => {
+    const context = {};
+
+    Given(
+      'I have the Temporal PlainDate "2024-08-12"',
+      setTemporalValue(context, "PlainDate", "2024-08-12"),
+    );
+    When("I format the Temporal value as an extended MDTG", formatTemporalValue(context, {}));
+    Then('the MDTG value should be "12000000Zaug24"', () => {
+      expect(context.value).toBe("12000000Zaug24");
+    });
+    When(
+      "I parse the MDTG value as a Temporal PlainDate",
+      parseTemporalValue(context, "plainDate"),
+    );
+    Then('the Temporal value should be "2024-08-12"', () => {
+      expect(context.temporalValue.toString()).toBe("2024-08-12");
+    });
+  });
+
+  TemporalScenario("Format and parse a Temporal PlainDateTime", ({ Given, When, Then }) => {
+    const context = {};
+
+    Given(
+      'I have the Temporal PlainDateTime "2024-08-12T11:55:30"',
+      setTemporalValue(context, "PlainDateTime", "2024-08-12T11:55:30"),
+    );
+    When(
+      'I format the Temporal value as an extended MDTG in timezone "A"',
+      formatTemporalValue(context, { form: "extended", timezone: "A" }),
+    );
+    Then('the MDTG value should be "12115530Aaug24"', () => {
+      expect(context.value).toBe("12115530Aaug24");
+    });
+    When(
+      "I parse the MDTG value as a Temporal PlainDateTime",
+      parseTemporalValue(context, "plainDateTime"),
+    );
+    Then('the Temporal value should be "2024-08-12T11:55:30"', () => {
+      expect(context.temporalValue.toString()).toBe("2024-08-12T11:55:30");
+    });
+  });
+
+  TemporalScenario("Format and parse a Temporal ZonedDateTime", ({ Given, When, Then }) => {
+    const context = {};
+    const value = "2024-08-12T11:55:30+01:00[+01:00]";
+
+    Given(
+      `I have the Temporal ZonedDateTime "${value}"`,
+      setTemporalValue(context, "ZonedDateTime", value),
+    );
+    When("I format the Temporal value as an extended MDTG", formatTemporalValue(context, {}));
+    Then('the MDTG value should be "12115530Aaug24"', () => {
+      expect(context.value).toBe("12115530Aaug24");
+    });
+    When(
+      "I parse the MDTG value as a Temporal ZonedDateTime",
+      parseTemporalValue(context, "zonedDateTime"),
+    );
+    Then(`the Temporal value should be "${value}"`, () => {
+      expect(context.temporalValue.toString()).toBe(value);
     });
   });
 

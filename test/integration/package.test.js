@@ -1,11 +1,13 @@
 import {
   formatMDTG,
+  formatTemporalMDTG,
   isExtendedFormat,
   isMDTG,
   isShortFormat,
   isStandardFormat,
   isValidMDTG,
   parseMDTG,
+  parseTemporalMDTG,
 } from "mdtg";
 import { describe, expect, it } from "vitest";
 
@@ -42,5 +44,27 @@ describe("installed package API", () => {
     expect(() => parseMDTG("310224Zfeb24")).toThrow(RangeError);
     expect(() => parseMDTG("invalid")).toThrow(Error);
     expect(isMDTG("invalid")).toBe(false);
+  });
+});
+
+describe.skipIf(!globalThis.Temporal)("installed package Temporal API", () => {
+  it("formats and parses PlainDate, PlainDateTime, and ZonedDateTime", () => {
+    const { PlainDate, PlainDateTime, ZonedDateTime } = Temporal;
+
+    expect(formatTemporalMDTG(PlainDate.from("2024-08-12"))).toBe("12000000Zaug24");
+    expect(formatTemporalMDTG(PlainDateTime.from("2024-08-12T11:55:30"), { timezone: "A" })).toBe(
+      "12115530Aaug24",
+    );
+    expect(formatTemporalMDTG(ZonedDateTime.from("2024-08-12T11:55:30+01:00[+01:00]"))).toBe(
+      "12115530Aaug24",
+    );
+
+    expect(parseTemporalMDTG("121155Zaug24", { type: "plainDate" }).toString()).toBe("2024-08-12");
+    expect(parseTemporalMDTG("12115530Aaug24", { type: "plainDateTime" }).toString()).toBe(
+      "2024-08-12T11:55:30",
+    );
+    expect(parseTemporalMDTG("12115530Aaug24", { type: "zonedDateTime" }).toString()).toBe(
+      "2024-08-12T11:55:30+01:00[+01:00]",
+    );
   });
 });
