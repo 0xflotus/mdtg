@@ -33,6 +33,11 @@ updates:
     groups:
       docusaurus:
         patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+      react:
+        patterns:
           - "@docusaurus/*"
   - package-ecosystem: "github-actions"
     directory: "/"
