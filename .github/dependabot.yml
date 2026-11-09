@@ -30,6 +30,10 @@ updates:
     open-pull-requests-limit: 15
     cooldown:
       default-days: 1
+    groups:
+      docusaurus:
+        patterns:
+          - "@docusaurus/*"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
