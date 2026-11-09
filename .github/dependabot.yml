@@ -31,12 +31,12 @@ updates:
     cooldown:
       default-days: 1
     groups:
-      docusaurus:
+      react:
         patterns:
           - "react"
           - "react-dom"
           - "@types/react"
-      react:
+      docusaurus:
         patterns:
           - "@docusaurus/*"
   - package-ecosystem: "github-actions"
