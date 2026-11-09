@@ -1,5 +1,12 @@
 {
   "$schema": "https://unpkg.com/knip@6.44.2/schema.json",
-  "entry": ["src/**/*.js", "stryker.config.mjs"],
+  "workspaces": {
+    ".": {
+      "entry": ["src/**/*.js", "stryker.config.mjs"]
+    },
+    "docs": {
+      "project": ["**/*.ts", "**/*.tsx", "**/*.mdx"]
+    }
+  },
   "ignoreDependencies": ["@systemfsoftware/stryker-js-vitest-runner"]
 }
