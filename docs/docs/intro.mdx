@@ -1,0 +1,34 @@
+---
+sidebar_position: 1
+---
+
+# MDTG
+
+`mdtg` converts JavaScript dates to [military date-time groups](https://en.wikipedia.org/wiki/Date-time_group) and back.
+
+## Install
+
+```bash
+npm install mdtg
+```
+
+## Quick start
+
+```js
+import { formatMDTG, parseMDTG } from "mdtg";
+
+const date = new Date(Date.UTC(2024, 7, 12, 11, 55, 30));
+
+formatMDTG(date, { form: "short" }); // "121155Z"
+formatMDTG(date, { form: "standard" }); // "121155Zaug24"
+formatMDTG(date); // "12115530Zaug24" (extended by default)
+
+const value = formatMDTG(date, { timezone: "A" }); // "12125530Aaug24"
+parseMDTG(value).toISOString(); // "2024-08-12T11:55:30.000Z"
+```
+
+## Documentation
+
+- [Date API](./api/date-api.mdx): format and parse JavaScript `Date` values.
+- [Temporal API](./api/temporal-api.mdx): work with native Temporal objects.
+- [Format checks](./api/format-checks.mdx): inspect structure and semantic validity.

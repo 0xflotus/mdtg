@@ -19,6 +19,17 @@ updates:
       stryker:
         patterns:
           - "@systemfsoftware/*"
+  - package-ecosystem: "npm"
+    directory: "/docs"
+    schedule:
+      interval: "daily"
+      time: "09:00"
+      timezone: "Europe/Berlin"
+    labels:
+      - "dependencies"
+    open-pull-requests-limit: 15
+    cooldown:
+      default-days: 1
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
