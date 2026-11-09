@@ -27,6 +27,10 @@ parseMDTG("121155Zaug24").toISOString(); // "2024-08-12T11:55:00.000Z"
 parseMDTG("121155Z"); // month and year are current UTC month/year
 ```
 
+## Documentation
+
+For further documentation, please visit [this link](https://0xflotus.github.io/mdtg).
+
 ### API
 
 #### `formatMDTG(date, options)`
