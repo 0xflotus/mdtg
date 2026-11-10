@@ -8,6 +8,7 @@ on:
       - CodeQL
       - Documentation
       - Documentation E2E Tests
+      - Documentation E2E Tests (Container)
       - Test Coverage
       - Integration Tests
       - Knip
