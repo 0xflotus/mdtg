@@ -1,6 +1,9 @@
 name: Documentation E2E Tests (Container)
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
   workflow_dispatch:
 
