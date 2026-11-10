@@ -38,4 +38,4 @@ jobs:
       - name: Install Playwright browser [${{ matrix.browser }}]
         run: npm exec --prefix docs -- playwright install --with-deps ${{ matrix.browser }}
       - name: Run documentation tests
-        run: BASE_URL=${{ env.BASE_URL }} npm run test:e2e --prefix docs
+        run: BASE_URL=${{ env.BASE_URL }} npm run test:e2e --prefix docs -- --project=${{ matrix.browser }}
