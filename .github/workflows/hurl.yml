@@ -1,0 +1,31 @@
+name: Hurl Tests
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+      timezone: "Europe/Berlin"
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  hurl:
+    name: Run Hurl Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Install Hurl
+        run: |
+          VERSION=8.1.0
+          curl -sSL https://github.com/Orange-OpenSource/hurl/releases/download/${VERSION}/hurl_${VERSION}_amd64.deb -o hurl.deb
+          sudo apt-get update
+          sudo apt-get install -y ./hurl.deb
+      - name: Show Hurl version
+        run: hurl version
+      - name: Run Hurl tests
+        run: npm run test:hurl --prefix docs
