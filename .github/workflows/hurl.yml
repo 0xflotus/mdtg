@@ -1,3 +1,4 @@
+
 name: Hurl Tests
 
 on:
@@ -9,29 +10,21 @@ on:
       - main
   workflow_dispatch:
 
-permissions:
-  contents: read
-
 jobs:
   hurl:
-    name: Run Hurl Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Install Hurl dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libxml2 libcurl4
       - name: Install Hurl
+        env:
+          HURL_VERSION: "8.1.0"
         run: |
-          VERSION=8.1.0
-          INSTALL_DIR="$RUNNER_TEMP"
-          curl --fail --silent --show-error --location \
-            "https://github.com/Orange-OpenSource/hurl/releases/download/${VERSION}/hurl-${VERSION}-x86_64-unknown-linux-gnu.tar.gz" \
-            | tar xz -C "$INSTALL_DIR"
-          echo "$INSTALL_DIR/hurl-${VERSION}-x86_64-unknown-linux-gnu/bin" >> "$GITHUB_PATH"
-      - name: Show Hurl version
-        run: hurl version
+          curl --fail --location --remote-name \
+            "https://github.com/Orange-OpenSource/hurl/releases/download/${HURL_VERSION}/hurl_${HURL_VERSION}_amd64.deb"
+          sudo apt-get update
+          sudo apt-get install -y "./hurl_${HURL_VERSION}_amd64.deb"
+      - name: Verify Hurl installation
+        run: hurl --version
       - name: Run Hurl tests
-        run: npm run test:hurl --prefix docs
+        run: hurl --test hurl/*.hurl
