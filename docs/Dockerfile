@@ -3,7 +3,7 @@ FROM node:26.13.0-alpine AS build
 WORKDIR /workspace
 
 COPY docs/package.json docs/package-lock.json ./docs/
-RUN npm ci --prefix docs
+RUN npm clean-install --prefix docs
 
 COPY docs/ ./docs/
 RUN npm run build --prefix docs
