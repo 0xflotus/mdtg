@@ -4,7 +4,10 @@ on:
   workflow_run:
     workflows:
       - npm Audit
+      - Behavior Testing
       - CodeQL
+      - Documentation
+      - Documentation E2E Tests
       - Test Coverage
       - Integration Tests
       - Knip
