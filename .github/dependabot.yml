@@ -48,3 +48,12 @@ updates:
     labels:
       - "github_actions"
     open-pull-requests-limit: 5
+  - package-ecosystem: "docker"
+    directory: "/docs"
+    schedule:
+      interval: "daily"
+      time: "08:30"
+      timezone: "Europe/Berlin"
+    labels:
+      - "docker"
+    open-pull-requests-limit: 15
