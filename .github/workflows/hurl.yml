@@ -27,4 +27,4 @@ jobs:
       - name: Verify Hurl installation
         run: hurl --version
       - name: Run Hurl tests
-        run: hurl --test hurl/*.hurl
+        run: hurl --test docs/hurl/*.hurl
