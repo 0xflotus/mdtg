@@ -19,6 +19,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Install Hurl dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libxml2 libcurl4
       - name: Install Hurl
         run: |
           VERSION=8.1.0
