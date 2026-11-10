@@ -1,0 +1,14 @@
+FROM node:26.13.0-alpine AS build
+
+WORKDIR /workspace
+
+COPY docs/package.json docs/package-lock.json ./docs/
+RUN npm ci --prefix docs
+
+COPY docs/ ./docs/
+RUN npm run build --prefix docs
+
+FROM nginx:alpine
+
+COPY --from=build /workspace/docs/build/ /usr/share/nginx/html/mdtg/
+COPY docs/nginx.conf /etc/nginx/conf.d/default.conf

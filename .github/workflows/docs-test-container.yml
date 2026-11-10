@@ -1,0 +1,47 @@
+name: Documentation E2E Tests (Container)
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test-container:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        browser:
+          - chromium
+          - firefox
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: docs/package-lock.json
+      - name: Install documentation dependencies
+        run: npm clean-install --prefix docs
+      - name: Build documentation image
+        run: docker build --file docs/Dockerfile --tag mdtg-docs .
+      - name: Start documentation container
+        run: docker run --detach --rm --name mdtg-docs --publish 3000:80 mdtg-docs
+      - name: Wait for documentation site
+        run: |
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:3000/mdtg/ > /dev/null; then
+              exit 0
+            fi
+            sleep 2
+          done
+          docker logs mdtg-docs
+          exit 1
+      - name: Install Playwright browser [${{ matrix.browser }}]
+        run: npm exec --prefix docs -- playwright install --with-deps ${{ matrix.browser }}
+      - name: Run documentation tests
+        run: BASE_URL=http://127.0.0.1:3000/mdtg/ npm run test:e2e --prefix docs -- --project=${{ matrix.browser }}
