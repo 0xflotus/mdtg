@@ -1,0 +1,47 @@
+name: Delete merged branches after 7 days
+
+on:
+  schedule:
+    - cron: "17 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  delete-branches:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete eligible branches
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          cutoff=$(date -u -d '7 days ago' +%s)
+
+          gh api --paginate \
+            "repos/$REPOSITORY/pulls?state=closed&per_page=100" \
+            --jq '.[] | select(.merged_at != null) | [.merged_at, .head.ref, .head.sha, .head.repo.full_name] | @tsv' |
+          while IFS=$'\t' read -r merged_at branch sha head_repo; do
+            [[ "$head_repo" == "$REPOSITORY" ]] || continue
+            [[ "$branch" != "$DEFAULT_BRANCH" ]] || continue
+
+            merged=$(date -u -d "$merged_at" +%s)
+            (( merged <= cutoff )) || continue
+
+            encoded_branch=$(jq -rn --arg value "$branch" '$value | @uri')
+
+            # Delete only if the branch still points to the PR's merge-time head commit.
+            current_sha=$(gh api "repos/$REPOSITORY/git/ref/heads/$encoded_branch" --jq '.object.sha' 2>/dev/null || true)
+            if [[ "$current_sha" == "$sha" ]]; then
+              gh api --method DELETE "repos/$REPOSITORY/git/refs/heads/$encoded_branch"
+              echo "Deleted: $branch"
+            else
+              echo "Skipped (missing or changed since merge): $branch"
+            fi
+          done
