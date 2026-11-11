@@ -12,11 +12,20 @@ on:
 jobs:
   hurl:
     runs-on: macos-26
+    strategy:
+      matrix:
+        version:
+          - 8.0.0
+          - 8.1.0
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Install Hurl
-        run: brew install hurl
+        run: |
+          brew tap --force homebrew/core
+          brew tap-new homebrew/local
+          brew extract --version=${{ matrix.version }} hurl homebrew/local
+          brew install homebrew/local/hurl@${{ matrix.version }}
       - name: Verify Hurl installation
         run: hurl --version
       - name: Run Hurl tests
