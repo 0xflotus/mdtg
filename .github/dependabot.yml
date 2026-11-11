@@ -9,6 +9,10 @@ updates:
     labels:
       - "dependencies"
     open-pull-requests-limit: 15
+    commit-message:
+      prefix: "chore"
+      prefix-development: "chore"
+      include: "scope"
     cooldown:
       default-days: 1
     groups:
@@ -28,6 +32,10 @@ updates:
     labels:
       - "dependencies"
     open-pull-requests-limit: 15
+    commit-message:
+      prefix: "chore"
+      prefix-development: "chore"
+      include: "scope"
     cooldown:
       default-days: 1
     groups:
@@ -48,6 +56,9 @@ updates:
     labels:
       - "github_actions"
     open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore"
+      include: "scope"
   - package-ecosystem: "docker"
     directory: "/docs"
     schedule:
@@ -57,3 +68,6 @@ updates:
     labels:
       - "docker"
     open-pull-requests-limit: 15
+    commit-message:
+      prefix: "chore"
+      include: "scope"
