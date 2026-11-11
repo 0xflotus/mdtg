@@ -11,18 +11,12 @@ on:
 
 jobs:
   hurl:
-    runs-on: ubuntu-24.04
+    runs-on: macos-26
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Install Hurl
-        env:
-          HURL_VERSION: "8.1.0"
-        run: |
-          curl --fail --location --remote-name \
-            "https://github.com/Orange-OpenSource/hurl/releases/download/${HURL_VERSION}/hurl_${HURL_VERSION}_amd64.deb"
-          sudo apt-get update
-          sudo apt-get install -y "./hurl_${HURL_VERSION}_amd64.deb"
+        run: brew install hurl
       - name: Verify Hurl installation
         run: hurl --version
       - name: Run Hurl tests
