@@ -11,7 +11,7 @@ jobs:
   format:
     name: Formatting
     runs-on: ubuntu-slim
-    timeout-minutes: 12
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Setup Node.js
@@ -19,6 +19,7 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
+          check-latest: true
       - run: npm clean-install
       - name: Check format
         run: npm run format && npm run prettier
@@ -26,7 +27,7 @@ jobs:
     name: Linting
     needs: format
     runs-on: ubuntu-slim
-    timeout-minutes: 12
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Setup Node.js
@@ -34,6 +35,7 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
+          check-latest: true
       - run: npm clean-install
       - name: Lint
         run: npm run lint
@@ -41,7 +43,7 @@ jobs:
     name: Testing
     needs: lint
     continue-on-error: true
-    timeout-minutes: 12
+    timeout-minutes: 10
     strategy:
       matrix:
         os:
