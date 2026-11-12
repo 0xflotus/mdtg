@@ -1,5 +1,5 @@
 {
-  "$schema": "https://unpkg.com/knip@6.45.0/schema.json",
+  "$schema": "https://unpkg.com/knip@6.45.1/schema.json",
   "ignoreBinaries": ["hurl"],
   "workspaces": {
     ".": {
