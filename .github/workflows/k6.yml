@@ -2,6 +2,8 @@ name: k6 Test
 
 on:
   push:
+    branches:
+      - main
   pull_request:
     paths:
       - .github/workflows/k6.yml
