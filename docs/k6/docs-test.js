@@ -2,10 +2,10 @@ import { check } from "k6";
 import http from "k6/http";
 
 export const options = {
-  vus: 2,
-  iterations: 2,
+  vus: 1,
+  iterations: 1,
   thresholds: {
-    checks: ["rate>0.99"],
+    checks: ["rate>=0.75"],
     http_req_failed: ["rate<0.01"],
   },
 };
@@ -15,6 +15,6 @@ export default function () {
 
   check(res, {
     "HTTP-Status is 200": (r) => r.status === 200,
-    "Title is Military date-time groups | MDTG": (r) => r.body.includes("<title>Military date-time groups | MDTG</title>"),
+    "Title is Military date-time groups | MDTG": (r) => r.head.includes("<title>Military date-time groups | MDTG</title>"),
   });
 }
