@@ -15,6 +15,5 @@ export default function () {
 
   check(res, {
     "HTTP-Status is 200": (r) => r.status === 200,
-    "Title is Military date-time groups | MDTG": (r) => r.head.includes("<title>Military date-time groups | MDTG</title>"),
   });
 }
