@@ -8,7 +8,7 @@ on:
       - docs/k6/docs-test.js
   workflow_dispatch:
   schedule:
-    - cron: '0 8 */2 * *'
+    - cron: "0 8 */2 * *"
 
 jobs:
   docs-smoke-test:
