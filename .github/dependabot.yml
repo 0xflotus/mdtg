@@ -56,6 +56,10 @@ updates:
     labels:
       - "github_actions"
     open-pull-requests-limit: 5
+    groups:
+      grafana:
+        patterns:
+          - "grafana/*"
     commit-message:
       prefix: "chore"
       include: "scope"
