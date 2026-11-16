@@ -41,8 +41,8 @@
   "devDependencies": {
     "@amiceli/vitest-cucumber": "8.0.0",
     "@biomejs/biome": "2.6.7",
-    "@systemfsoftware/stryker-js": "17.0.2",
-    "@systemfsoftware/stryker-js-vitest-runner": "8.1.1",
+    "@systemfsoftware/stryker-js": "22.0.0",
+    "@systemfsoftware/stryker-js-vitest-runner": "10.1.0",
     "@vitest/coverage-v8": "5.1.0",
     "fast-check": "4.10.2",
     "knip": "6.45.1",
