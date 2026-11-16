@@ -26,7 +26,7 @@
     "test:property": "vitest run --project property",
     "test:integration": "vitest run --project integration",
     "test:gherkin": "vitest run --project behavior",
-    "test:mutation": "stryker run"
+    "test:mutation": "node node_modules/@systemfsoftware/stryker-js/dist/main.mjs run"
   },
   "keywords": [
     "military",
