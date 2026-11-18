@@ -39,7 +39,7 @@
   "license": "MIT",
   "description": "This package offers you methods to convert Date Objects to military date time group and vice versa",
   "devDependencies": {
-    "@amiceli/vitest-cucumber": "8.0.0",
+    "@amiceli/vitest-cucumber": "8.0.1",
     "@biomejs/biome": "2.6.8",
     "@systemfsoftware/stryker-js": "23.2.2",
     "@systemfsoftware/stryker-js-vitest-runner": "10.1.2",
