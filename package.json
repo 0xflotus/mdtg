@@ -43,10 +43,10 @@
     "@biomejs/biome": "2.6.9",
     "@systemfsoftware/stryker-js": "23.2.2",
     "@systemfsoftware/stryker-js-vitest-runner": "10.1.2",
-    "@vitest/coverage-v8": "5.1.1",
+    "@vitest/coverage-v8": "5.1.2",
     "fast-check": "4.11.0",
     "knip": "6.48.0",
     "prettier": "3.10.1",
-    "vitest": "5.1.1"
+    "vitest": "5.1.2"
   }
 }
